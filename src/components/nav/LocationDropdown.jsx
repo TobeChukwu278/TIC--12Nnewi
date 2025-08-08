@@ -7,15 +7,33 @@ const locations = [
     'Uruagu',
     'Umudim',
     'Nnewichi',
-    'Phoenix, AZ',
-    'Philadelphia, PA',
-    'San Antonio, TX',
-    'San Diego, CA',
+    'Nkwo Nnewi',
+    'Roundabout',
+    'Nnobi',
+    'Owerri Road',
+    'Edozie Street',
+    'Okpuno-Egbu',
+    'Eme Court Road',
+    'Eke Amangwu',
+    'Okigwe Road',
+    'St. Mary\'s Cathederal Area',
+    'Akamili',
+    'Obiofia Otolo',
+    'Egbu Umunenem',
+    'Agbo Edo',
+    'Umudim Central',
+    'Edoji Uruagu',
+    'Okpuno Otolo',
+    'NAUTH area',
+    'Chicason Industrial Layout',
+    'Innoson Vehicle Manufacturing Plant Area',
+    'Old Nkwo Area',
+    'Nnewichi Central'
 ];
 
 const LocationDropdown = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [selectedLocation, setSelectedLocation] = useState('New York, NY');
+    const [selectedLocation, setSelectedLocation] = useState('Nnewi');
 
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);

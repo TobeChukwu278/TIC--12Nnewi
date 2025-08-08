@@ -15,7 +15,7 @@ const Navigation = () => {
             <nav className="bg-gray-900 p-4 flex items-center justify-between shadow-lg text-white">
 
                 {/* Logo */}
-                <div className="font-bold text-xl">MyStore</div>
+                <div className="font-bold text-xl">TIC</div>
 
                 {/* Location Dropdown */}
                 <div>
