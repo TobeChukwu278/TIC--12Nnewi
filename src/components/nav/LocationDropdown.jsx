@@ -3,10 +3,10 @@ import { FaMapMarkerAlt } from 'react-icons/fa'; // Import location icon
 import { IoIosArrowDown } from 'react-icons/io'; // Import arrow icon for consistency
 
 const locations = [
-    'New York, NY',
-    'Los Angeles, CA',
-    'Chicago, IL',
-    'Houston, TX',
+    'Otolo',
+    'Uruagu',
+    'Umudim',
+    'Nnewichi',
     'Phoenix, AZ',
     'Philadelphia, PA',
     'San Antonio, TX',
@@ -28,6 +28,7 @@ const LocationDropdown = () => {
 
     return (
         <div className="relative">
+            <h4 className='text-white/50'>Your location</h4>
             <button
                 className="flex items-center space-x-1 text-white hover:text-gray-400 font-medium transition-colors duration-200 focus:outline-none"
                 onClick={toggleDropdown}

@@ -2,42 +2,18 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import SearchInput from './SearchInput';
 import DropdownNavItem from './DropdownNavItem';
-import LocationDropdown from './LocationDropdown'; // Import the new component
+import LocationDropdown from './LocationDropdown';
+import Cart from './Cart';
 
-const NavList = [
-    {
-        Navitem: 'All Categories',
-        hasDropdown: true,
-        dropdownItems: ['Fashion', 'Electronics', 'Bags', 'Footwear', 'Groceries', 'Beauty', 'Wellness', 'Makeup', 'Automotive'],
-    },
-    {
-        Navitem: 'FASHION',
-    },
-    {
-        Navitem: 'ELECTRONICS',
-    },
-    {
-        Navitem: 'BAGS',
-    },
-    {
-        Navitem: 'FOOTWEAR',
-    },
-    {
-        Navitem: 'GROCERIES',
-    },
-    {
-        Navitem: 'BEAUTY',
-    },
-    {
-        Navitem: 'WELLNESS',
-    }
-];
+// You can create a separate file for your NavList and import it
+import { NavList } from './NavList'; // Assuming you put the NavList in a separate file
 
 const Navigation = () => {
     return (
         <div>
             {/* Top Navigation Bar (Logo, Location, Search, Login/Cart) */}
             <nav className="bg-gray-900 p-4 flex items-center justify-between shadow-lg text-white">
+
                 {/* Logo */}
                 <div className="font-bold text-xl">MyStore</div>
 
@@ -54,7 +30,7 @@ const Navigation = () => {
                 {/* Login CTA and Cart */}
                 <div className="flex items-center space-x-4">
                     <button className="text-white hover:text-gray-400">Sign In</button>
-                    <button className="text-white hover:text-gray-400">Cart (0)</button>
+                    <Cart />
                 </div>
             </nav>
 
@@ -69,9 +45,11 @@ const Navigation = () => {
                                 <NavLink
                                     key={index}
                                     to={`/${item.Navitem.toLowerCase().replace(/\s/g, '-')}`}
-                                    className="text-white hover:text-gray-400 font-medium transition-colors duration-200"
+                                    className="text-white hover:text-gray-400 font-medium transition-colors duration-200 flex items-center space-x-2" // Added flex classes
                                 >
-                                    {item.Navitem}
+                                    {/* Render the icon */}
+                                    {item.icon}
+                                    <span>{item.Navitem}</span>
                                 </NavLink>
                             );
                         }
@@ -80,6 +58,6 @@ const Navigation = () => {
             </nav>
         </div>
     );
-}
+};
 
 export default Navigation;

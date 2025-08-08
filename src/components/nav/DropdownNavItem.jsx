@@ -11,7 +11,7 @@ const DropdownNavItem = ({ item }) => {
     };
 
     return (
-        <div className="relative">
+        <div className="relative bg-indigo-600 px-3 py-[3px] rounded-2xl">
             <NavLink
                 to={`/${item.Navitem.toLowerCase().replace(/\s/g, '-')}`}
                 className="text-white hover:text-gray-400 font-medium transition-colors duration-200 flex items-center space-x-1"
