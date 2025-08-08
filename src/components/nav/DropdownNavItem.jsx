@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { IoIosArrowDown } from 'react-icons/io'; // Import the arrow icon
 
 const DropdownNavItem = ({ item }) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -13,10 +14,13 @@ const DropdownNavItem = ({ item }) => {
         <div className="relative">
             <NavLink
                 to={`/${item.Navitem.toLowerCase().replace(/\s/g, '-')}`}
-                className="text-white hover:text-gray-400 font-medium transition-colors duration-200"
+                className="text-white hover:text-gray-400 font-medium transition-colors duration-200 flex items-center space-x-1"
                 onClick={toggleDropdown}
             >
-                {item.Navitem}
+                <span>{item.Navitem}</span>
+                <IoIosArrowDown // Use the imported React Icon component
+                    className={`h-4 w-4 transform transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : 'rotate-0'}`}
+                />
             </NavLink>
             {isDropdownOpen && (
                 <div className="absolute left-0 mt-2 w-48 bg-gray-700 rounded-md shadow-xl py-2 z-10">
