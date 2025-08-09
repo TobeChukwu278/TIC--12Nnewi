@@ -1,5 +1,7 @@
+// src/components/Navigation.jsx
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { FaBars, FaTimes, FaHome, FaHeart, FaListAlt, FaUser } from 'react-icons/fa';
 import { MdSearch } from 'react-icons/md';
 import SearchInput from './SearchInput';
@@ -18,7 +20,7 @@ const Navigation = () => {
                 <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-white">
                     {isMenuOpen ? <FaTimes className="h-6 w-6" /> : <FaBars className="h-6 w-6" />}
                 </button>
-                <div className="font-bold text-xl text-white">TIC</div>
+                <NavLink to="/" className="font-bold text-xl text-white">TIC</NavLink> {/* CORRECTED */}
                 <Cart />
             </nav>
 
@@ -26,7 +28,7 @@ const Navigation = () => {
             <div className={`fixed inset-0 bg-gray-800 text-white z-50 transform lg:hidden transition-transform duration-300 ease-in-out ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
                 {/* Mobile Menu Header */}
                 <div className="p-4 flex justify-between items-center border-b border-gray-700">
-                    <div className="font-bold text-xl">TIC</div>
+                    <NavLink to="/" className="font-bold text-xl">TIC</NavLink> {/* CORRECTED */}
                     <button onClick={() => setIsMenuOpen(false)} className="text-white">
                         <FaTimes className="h-6 w-6" />
                     </button>
@@ -99,9 +101,8 @@ const Navigation = () => {
 
             {/* Desktop Navigation (hidden on small screens) */}
             <div className="hidden lg:block">
-                {/* Your existing desktop navigation structure */}
                 <nav className="bg-gray-900 p-4 flex items-center justify-between shadow-lg text-white">
-                    <div className="font-bold text-xl">TIC</div>
+                    <NavLink to="/" className="text-white font-bold text-xl">TIC</NavLink> {/* CORRECTED */}
                     <div>
                         <LocationDropdown />
                     </div>
