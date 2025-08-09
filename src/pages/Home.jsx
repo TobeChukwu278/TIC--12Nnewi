@@ -2,6 +2,7 @@ import React from 'react';
 import BannerSlider from '../components/home/BannerSlider';
 import FeaturedCategories from '../components/home/FeaturedCategories';
 import ProductSection from '../components/home/ProductSection';
+import PopularProductsSlider from '../components/home/PopularProductsSlider';
 import WellnessSection from '../components/home/WellnessSection';
 import HealthSection from '../components/home/HealthSection';
 import Footer from '../components/home/Footer';
@@ -16,7 +17,8 @@ const HomePage = () => {
             <FeaturedCategories />
 
             {/* 3. Popular Products Section */}
-            <ProductSection title="Popular Products" category="popular" />
+            <PopularProductsSlider />
+            {/* <ProductSection title="Popular Products" category="popular" /> */}
 
             {/* 4. New Products Section */}
             <ProductSection title="New Products" category="new" />
