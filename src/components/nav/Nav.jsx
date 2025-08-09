@@ -50,6 +50,9 @@ const Navigation = () => {
                     <nav>
                         <div className="flex flex-col space-y-2">
                             {NavList.map((item, index) => {
+                                // Add this check to skip undefined items
+                                if (!item) return null;
+
                                 if (item.hasDropdown) {
                                     return <DropdownNavItem key={index} item={item} />;
                                 } else {
@@ -57,8 +60,7 @@ const Navigation = () => {
                                         <NavLink
                                             key={index}
                                             to={`/${item.Navitem.toLowerCase().replace(/\s/g, '-')}`}
-                                            className="py-2 text-white hover:text-gray-400 font-medium transition-colors duration-200 flex items-center space-x-2"
-                                            onClick={() => setIsMenuOpen(false)}
+                                            className="text-white hover:text-gray-400 font-medium transition-colors duration-200 flex items-center space-x-2"
                                         >
                                             {item.icon}
                                             <span>{item.Navitem}</span>
