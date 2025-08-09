@@ -18,7 +18,7 @@ const Navigation = () => {
                 <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-white">
                     {isMenuOpen ? <FaTimes className="h-6 w-6" /> : <FaBars className="h-6 w-6" />}
                 </button>
-                <div className="font-bold text-xl text-white">MyStore</div>
+                <div className="font-bold text-xl text-white">TIC</div>
                 <Cart />
             </nav>
 
