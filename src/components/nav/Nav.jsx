@@ -114,7 +114,7 @@ const Navigation = () => {
                     </div>
                 </nav>
 
-                <nav className="bg-gray-800 p-4 shadow-md">
+                <nav className="bg-gray-800 p-4 shadow-md rounded-b-lg">
                     <div className="container mx-auto flex justify-center space-x-6">
                         {NavList.map((item, index) => {
                             if (item.hasDropdown) {
