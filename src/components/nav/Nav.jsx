@@ -26,7 +26,7 @@ const Navigation = () => {
             <div className={`fixed inset-0 bg-gray-800 text-white z-50 transform lg:hidden transition-transform duration-300 ease-in-out ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
                 {/* Mobile Menu Header */}
                 <div className="p-4 flex justify-between items-center border-b border-gray-700">
-                    <div className="font-bold text-xl">MyStore</div>
+                    <div className="font-bold text-xl">TIC</div>
                     <button onClick={() => setIsMenuOpen(false)} className="text-white">
                         <FaTimes className="h-6 w-6" />
                     </button>
@@ -99,7 +99,7 @@ const Navigation = () => {
             <div className="hidden lg:block">
                 {/* Your existing desktop navigation structure */}
                 <nav className="bg-gray-900 p-4 flex items-center justify-between shadow-lg text-white">
-                    <div className="font-bold text-xl">MyStore</div>
+                    <div className="font-bold text-xl">TIC</div>
                     <div>
                         <LocationDropdown />
                     </div>
