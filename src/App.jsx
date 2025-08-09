@@ -5,7 +5,7 @@ import HomePage from './pages/Home'
 
 const App = () => {
   return (
-    <div>
+    <div className='px-2'>
       <Navigation />
       <HomePage />
     </div>
