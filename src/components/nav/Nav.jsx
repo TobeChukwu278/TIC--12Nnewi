@@ -80,7 +80,7 @@ const Navigation = () => {
 
             {/* Mobile Bottom Navigation Bar */}
             <div className="fixed bottom-0 left-0 right-0 bg-gray-900 p-2 flex justify-around items-center text-white border-t border-gray-700 lg:hidden z-40">
-                <NavLink to="/" onClick={closeMenu} className="flex flex-col items-center p-2 text-white hover:text-gray-400">
+                <NavLink to="/store" onClick={closeMenu} className="flex flex-col items-center p-2 text-white hover:text-gray-400">
                     <FaHome className="h-6 w-6" />
                     <span className="text-xs mt-1">Home</span>
                 </NavLink>
