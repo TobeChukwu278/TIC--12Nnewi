@@ -17,7 +17,6 @@ const HomePage = () => {
             <FeaturedCategories />
             <PopularProductsSlider />
 
-            {/* Use the new component here instead of ProductSection */}
             <NewProductsSlider />
             <FeaturedProductsSlider />
 
