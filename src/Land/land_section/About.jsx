@@ -8,7 +8,7 @@ const About = () => {
                     {/* Image Section */}
                     <div className="relative">
                         <img
-                            src="https://via.placeholder.com/600x400/87CEEB/000000?text=TIC+Nnewi+Team"
+                            src="/image3.png"
                             alt="TIC Nnewi team working together"
                             className="w-full h-auto rounded-lg shadow-xl transform hover:scale-105 transition-transform duration-300"
                         />
