@@ -188,7 +188,7 @@ const TechnologyGadgetsPage = () => {
     return (
         <div className="bg-gray-50 min-h-screen">
             {/* Hero Section */}
-            <div className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 h-64 flex items-center justify-center text-white p-4">
+            <div className="relative rounded-b-lg bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 h-64 flex items-center justify-center text-white p-4">
                 <div className="text-center">
                     <h1 className="text-5xl font-extrabold tracking-tight mb-2">Technology & Gadgets</h1>
                     <p className="text-xl font-light opacity-80">Innovate your life with the latest tech.</p>
