@@ -4,11 +4,11 @@ import { FaHeart, FaEye } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
 
 const ProductCard = ({ product }) => {
-    const handleViewProduct = (e) => {
-        e.preventDefault();
-        // Here you would navigate to a product detail page, e.g., using `history.push` or NavLink.
-        console.log(`View product: ${product.name}`);
-    };
+    // const handleViewProduct = (e) => {
+    //     e.preventDefault();
+    //     // Here you would navigate to a product detail page, e.g., using `history.push` or NavLink.
+    //     console.log(`View product: ${product.name}`);
+    // };
 
     const handleAddToFavorites = (e) => {
         e.preventDefault();
@@ -29,9 +29,9 @@ const ProductCard = ({ product }) => {
                 >
                     <FaHeart className="w-5 h-5" />
                 </button>
+                {/* THIS IS THE KEY CHANGE */}
                 <NavLink to={`/product/${product.id}`}>
                     <button
-                        onClick={handleViewProduct}
                         className="bg-white p-2 rounded-full shadow-md text-gray-700 hover:text-blue-500 transition-colors duration-200"
                         title="View Product"
                     >
