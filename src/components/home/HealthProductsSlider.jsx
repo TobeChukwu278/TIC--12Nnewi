@@ -9,7 +9,7 @@ import { FaHeart, FaEye } from 'react-icons/fa';
 // Placeholder product data for health items
 const healthProducts = [
     {
-        id: 25,
+        id: 1,
         name: 'Immune Support Vitamins',
         price: '$22.50',
         image: 'https://via.placeholder.com/300x400/FFD700/000000?text=Vitamins',
@@ -19,7 +19,7 @@ const healthProducts = [
         discountedPrice: '$22.50',
     },
     {
-        id: 26,
+        id: 2,
         name: 'Digital Blood Pressure Monitor',
         price: '$65.00',
         image: 'https://via.placeholder.com/300x400/ADFF2F/000000?text=BP+Monitor',

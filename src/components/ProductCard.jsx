@@ -1,65 +1,45 @@
-// src/components/ProductCard.jsx
-import React from 'react';
-import { FaHeart, FaEye } from 'react-icons/fa';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { FaHeart } from 'react-icons/fa';
 
 const ProductCard = ({ product }) => {
-    // const handleViewProduct = (e) => {
-    //     e.preventDefault();
-    //     // Here you would navigate to a product detail page, e.g., using `history.push` or NavLink.
-    //     console.log(`View product: ${product.name}`);
-    // };
-
-    const handleAddToFavorites = (e) => {
-        e.preventDefault();
-        // Logic to add the product to a user's favorites
-        console.log(`Added to favorites: ${product.name}`);
-    };
+    const [isHovered, setIsHovered] = useState(false);
 
     return (
-        <div className="bg-white rounded-lg shadow-md overflow-hidden relative group">
-            <img src={product.image} alt={product.name} className="w-full h-64 object-cover" />
+        <div
+            className="relative bg-white rounded-lg shadow-lg overflow-hidden transition-transform duration-300 transform hover:scale-105"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+        >
+            {/* The entire card is a NavLink, making it clickable on all devices */}
+            <NavLink to={`/product/${product.id}`} className="block">
+                {/* Product Image */}
+                <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-48 object-cover"
+                />
 
-            {/* Hover Overlay for Favorites and View Product */}
-            <div className="absolute top-2 right-2 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <button
-                    onClick={handleAddToFavorites}
-                    className="bg-white p-2 rounded-full shadow-md text-gray-700 hover:text-red-500 transition-colors duration-200"
-                    title="Add to Favorites"
-                >
-                    <FaHeart className="w-5 h-5" />
-                </button>
-                {/* THIS IS THE KEY CHANGE */}
-                <NavLink to={`/product/${product.id}`}>
-                    <button
-                        className="bg-white p-2 rounded-full shadow-md text-gray-700 hover:text-blue-500 transition-colors duration-200"
-                        title="View Product"
-                    >
-                        <FaEye className="w-5 h-5" />
-                    </button>
-                </NavLink>
-            </div>
-
-            <div className="p-4">
-                <h3 className="text-lg font-semibold truncate">{product.name}</h3>
-
-                <p className={`text-sm mt-1 ${product.inStock ? 'text-green-600' : 'text-red-600'}`}>
-                    {product.inStock ? 'In Stock' : 'Out of Stock'}
-                </p>
-
-                <p className="text-sm text-gray-500 mt-1">
-                    Reviews: {product.reviews} / 5
-                </p>
-
-                <div className="flex items-baseline mt-2">
-                    <p className="text-gray-500 line-through text-sm mr-2">{product.originalPrice}</p>
-                    <p className="text-xl font-bold text-blue-600">{product.discountedPrice}</p>
+                {/* Product Details */}
+                <div className="p-4">
+                    <h3 className="text-lg font-semibold text-gray-800 mb-1">{product.name}</h3>
+                    <p className="text-gray-600">${product.price}</p>
                 </div>
+            </NavLink>
 
-                <button className="mt-4 w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-colors duration-200">
-                    Add to Cart
-                </button>
-            </div>
+            {/* Favorites Button - Visible on hover (desktop) and always on mobile for accessibility */}
+            <button
+                className={`absolute top-2 right-2 p-2 bg-white rounded-full shadow-md transition-opacity duration-300 
+                            ${isHovered ? 'opacity-100' : 'opacity-0 md:opacity-100'}`}
+                aria-label="Add to favorites"
+                onClick={(e) => {
+                    e.stopPropagation(); // Prevents the NavLink from being triggered
+                    // Your logic to add/remove from favorites goes here
+                    console.log(`Toggling favorite for product: ${product.name}`);
+                }}
+            >
+                <FaHeart className="w-5 h-5 text-gray-400 hover:text-red-500 transition-colors duration-200" />
+            </button>
         </div>
     );
 };
