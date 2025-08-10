@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 import { FaStar, FaRegStar, FaHeart, FaRegHeart, FaEye, FaTimes, FaFilter, FaAngleUp, FaAngleDown } from 'react-icons/fa';
 
-// Placeholder data for Fashion products (more items to fill the page)
-const fashionProducts = [
-    { id: 31, name: 'Stylish Denim Jacket', image: 'https://placehold.co/300x400/87CEEB/000000?text=Denim+Jacket', inStock: true, reviews: 4.5, price: 65.00, description: 'A timeless denim jacket with a modern slim fit. Perfect for layering in any season.', category: 'Outerwear' },
-    { id: 32, name: 'Classic White T-Shirt', image: 'https://placehold.co/300x400/FFFFFF/000000?text=White+T-Shirt', inStock: true, reviews: 4.8, price: 20.00, description: 'Made from 100% organic cotton, this t-shirt is soft, durable, and a wardrobe essential.', category: 'Tops' },
-    { id: 33, name: 'Slim Fit Chinos', image: 'https://placehold.co/300x400/A9A9A9/FFFFFF?text=Chinos', inStock: true, reviews: 4.2, price: 45.00, description: 'Versatile and comfortable chinos that can be dressed up or down. A must-have for every closet.', category: 'Pants' },
-    { id: 34, name: 'Floral Summer Dress', image: 'https://placehold.co/300x400/FFC0CB/000000?text=Summer+Dress', inStock: false, reviews: 4.7, price: 50.00, description: 'A breezy and elegant floral dress perfect for sunny days and special occasions.', category: 'Dresses' },
-    { id: 35, name: 'Leather Ankle Boots', image: 'https://placehold.co/300x400/8B4513/FFFFFF?text=Ankle+Boots', inStock: true, reviews: 4.6, price: 100.00, description: 'Handcrafted leather boots with a durable sole. Designed for both style and comfort.', category: 'Footwear' },
-    { id: 36, name: 'Elegant Maxi Skirt', image: 'https://placehold.co/300x400/8A2BE2/FFFFFF?text=Maxi+Skirt', inStock: true, reviews: 4.4, price: 60.00, description: 'A flowing, high-waisted maxi skirt that adds a touch of sophistication to your look.', category: 'Skirts' },
-    { id: 37, name: 'Puffer Vest', image: 'https://placehold.co/300x400/778899/FFFFFF?text=Puffer+Vest', inStock: true, reviews: 4.1, price: 85.00, description: 'Lightweight yet warm puffer vest. The ideal layer for a transitional wardrobe.', category: 'Outerwear' },
-    { id: 38, name: 'Sporty Leggings', image: 'https://placehold.co/300x400/FFDAB9/000000?text=Leggings', inStock: true, reviews: 4.9, price: 35.00, description: 'High-performance leggings with moisture-wicking fabric for all your active needs.', category: 'Pants' },
-    { id: 39, name: 'Oversized Sweater', image: 'https://placehold.co/300x400/B0C4DE/000000?text=Sweater', inStock: true, reviews: 4.3, price: 40.00, description: 'A cozy and stylish oversized sweater for ultimate comfort on chilly days.', category: 'Tops' },
-    { id: 40, name: 'Vintage Sunglasses', image: 'https://placehold.co/300x400/663399/FFFFFF?text=Sunglasses', inStock: true, reviews: 4.7, price: 28.00, description: 'Classic aviator-style sunglasses with UV protection. A perfect blend of retro and modern.', category: 'Accessories' },
-    { id: 41, name: 'Striped Polo Shirt', image: 'https://placehold.co/300x400/87CEEB/000000?text=Polo+Shirt', inStock: true, reviews: 4.6, price: 25.00, description: 'A timeless polo shirt with a striped design, perfect for a casual yet polished look.', category: 'Tops' },
-    { id: 42, name: 'Hooded Sweatshirt', image: 'https://placehold.co/300x400/2F4F4F/FFFFFF?text=Hoodie', inStock: true, reviews: 4.5, price: 50.00, description: 'Soft and comfortable hooded sweatshirt with a minimalist design for everyday wear.', category: 'Outerwear' },
+// Placeholder data for Technology & Gadgets products
+const technologyProducts = [
+    { id: 101, name: 'Smart Home Hub', image: 'https://placehold.co/300x400/1E90FF/FFFFFF?text=Smart+Hub', inStock: true, reviews: 4.6, price: 129.99, description: 'Control all your smart devices with this central hub. Compatible with all major platforms.', category: 'IoT Devices' },
+    { id: 102, name: 'Wireless Noise-Cancelling Headphones', image: 'https://placehold.co/300x400/4B0082/FFFFFF?text=Headphones', inStock: true, reviews: 4.8, price: 249.99, description: 'Immersive audio with industry-leading noise cancellation. All-day battery life.', category: 'Electronics' },
+    { id: 103, name: 'Portable SSD (1TB)', image: 'https://placehold.co/300x400/87CEFA/000000?text=Portable+SSD', inStock: true, reviews: 4.7, price: 99.50, description: 'High-speed storage in a compact and durable design. Perfect for on-the-go data.', category: 'Peripherals' },
+    { id: 104, name: '4K Ultra HD Monitor', image: 'https://placehold.co/300x400/00008B/FFFFFF?text=4K+Monitor', inStock: false, reviews: 4.9, price: 499.00, description: 'Stunning visuals and clarity for work, gaming, and media consumption.', category: 'Electronics' },
+    { id: 105, name: 'Smart Video Doorbell', image: 'https://placehold.co/300x400/20B2AA/FFFFFF?text=Video+Doorbell', inStock: true, reviews: 4.5, price: 149.99, description: 'See who is at your door from anywhere with two-way audio and HD video.', category: 'IoT Devices' },
+    { id: 106, name: 'Ergonomic Wireless Mouse', image: 'https://placehold.co/300x400/A9A9A9/FFFFFF?text=Mouse', inStock: true, reviews: 4.4, price: 55.00, description: 'Designed for comfort and precision. Customizable buttons and long battery life.', category: 'Peripherals' },
+    { id: 107, name: 'Subscription to ProDesign Software', image: 'https://placehold.co/300x400/32CD32/FFFFFF?text=Software', inStock: true, reviews: 4.3, price: 15.99, description: 'A powerful suite of tools for graphic designers and digital artists. Monthly subscription.', category: 'Software Tools' },
+    { id: 108, name: 'HD Webcam with Microphone', image: 'https://placehold.co/300x400/B0C4DE/000000?text=Webcam', inStock: true, reviews: 4.2, price: 79.00, description: 'Crisp video and clear audio for all your video calls and streaming needs.', category: 'Peripherals' },
+    { id: 109, name: 'E-Reader with Backlight', image: 'https://placehold.co/300x400/D2B48C/000000?text=E-Reader', inStock: true, reviews: 4.7, price: 119.00, description: 'Read for hours without eye strain. Thin, light, and with a huge library of books.', category: 'Electronics' },
+    { id: 110, name: 'Premium Cloud Storage (1TB)', image: 'https://placehold.co/300x400/4682B4/FFFFFF?text=Cloud+Storage', inStock: true, reviews: 4.9, price: 9.99, description: 'Securely store and share all your files. Accessible from any device.', category: 'Software Tools' },
+    { id: 111, name: 'Smart Wi-Fi LED Light Bulbs', image: 'https://placehold.co/300x400/FFA500/000000?text=LED+Bulbs', inStock: true, reviews: 4.5, price: 45.00, description: 'Control your lighting with your voice or smartphone. Dimmable and color-changing.', category: 'IoT Devices' },
+    { id: 112, name: 'VR Headset', image: 'https://placehold.co/300x400/6A5ACD/FFFFFF?text=VR+Headset', inStock: false, reviews: 4.8, price: 399.00, description: 'Step into a new reality with this high-resolution virtual reality headset.', category: 'Electronics' },
 ];
 
 // Reusable ProductCard component for a clean, modern look
@@ -144,11 +144,10 @@ const QuickViewModal = ({ product, onClose }) => {
     );
 };
 
-
-const FashionPage = () => {
+const TechnologyGadgetsPage = () => {
     const [filters, setFilters] = useState({
         inStock: false,
-        priceRange: [0, 200],
+        priceRange: [0, 600],
         minReviews: 0,
     });
     const [sortBy, setSortBy] = useState('price-asc');
@@ -167,7 +166,7 @@ const FashionPage = () => {
         setSortBy(e.target.value);
     };
 
-    const filteredAndSortedProducts = fashionProducts
+    const filteredAndSortedProducts = technologyProducts
         .filter(product => {
             // In Stock filter
             if (filters.inStock && !product.inStock) return false;
@@ -189,17 +188,17 @@ const FashionPage = () => {
     return (
         <div className="bg-gray-50 min-h-screen">
             {/* Hero Section */}
-            <div className="relative bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 h-64 flex items-center justify-center text-white p-4">
+            <div className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 h-64 flex items-center justify-center text-white p-4">
                 <div className="text-center">
-                    <h1 className="text-5xl font-extrabold tracking-tight mb-2">Fashion Collection</h1>
-                    <p className="text-xl font-light opacity-80">Style that speaks for itself.</p>
+                    <h1 className="text-5xl font-extrabold tracking-tight mb-2">Technology & Gadgets</h1>
+                    <p className="text-xl font-light opacity-80">Innovate your life with the latest tech.</p>
                 </div>
             </div>
 
             <div className="container mx-auto py-8 px-4">
                 {/* Filter and Sort Section */}
                 <div className="sticky top-0 bg-white rounded-xl shadow-lg z-10 p-4 mb-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 md:space-x-4">
-                    <h2 className="text-xl font-semibold text-gray-800">Explore Products</h2>
+                    <h2 className="text-xl font-semibold text-gray-800">Explore Gadgets</h2>
 
                     {/* Mobile Filter Button */}
                     <button
@@ -314,4 +313,4 @@ const FashionPage = () => {
     );
 };
 
-export default FashionPage;
+export default TechnologyGadgetsPage;

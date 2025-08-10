@@ -3,7 +3,7 @@ import React from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import Navigation from './components/nav/Nav';
 import HomePage from './pages/Home';
-import FashionPage from './pages/FashionPage';
+import TechnologyGadgetsPage from './pages/TechnologyGadgetsPage';
 import BagsPage from './pages/BagsPage';
 import ElectronicsPage from './pages/ElectronicsPage';
 import FootwearPage from './pages/FootwearPage';
@@ -33,7 +33,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Land />} />
         <Route path="/store" element={<HomePage />} />
-        <Route path="/fashion" element={<FashionPage />} />
+        <Route path="/technologygadgetspage" element={<TechnologyGadgetsPage />} />
         <Route path="/bags" element={<BagsPage />} />
         <Route path="/electronics" element={<ElectronicsPage />} />
         <Route path="/footwear" element={<FootwearPage />} />
