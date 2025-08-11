@@ -1,16 +1,23 @@
 import React, { useState } from 'react';
 import { FaStar, FaRegStar, FaHeart, FaRegHeart, FaEye, FaTimes, FaFilter, FaAngleUp, FaAngleDown } from 'react-icons/fa';
+import { FaTshirt, FaRing, FaPaintBrush } from 'react-icons/fa'; // Icons for the new categories
 
-// Placeholder data for Electronics products
-const electronicsProducts = [
-    { id: 51, name: '4K Smart LED TV', image: 'https://placehold.co/300x400/000080/FFFFFF?text=Smart+TV', inStock: true, reviews: 4.9, price: 599.00, description: 'Experience stunning clarity with this 4K Smart LED TV, featuring a sleek, minimalist design and smart connectivity.', category: 'Televisions' },
-    { id: 52, name: 'Wireless Bluetooth Earbuds', image: 'https://placehold.co/300x400/4169E1/FFFFFF?text=Earbuds', inStock: true, reviews: 4.7, price: 59.00, description: 'Enjoy high-fidelity audio and crystal-clear calls with these comfortable, noise-canceling wireless earbuds.', category: 'Audio' },
-    { id: 53, name: 'Portable Bluetooth Speaker', image: 'https://placehold.co/300x400/6495ED/FFFFFF?text=Bluetooth+Speaker', inStock: true, reviews: 4.5, price: 39.00, description: 'A compact and powerful speaker with rich sound and a long-lasting battery, perfect for any adventure.', category: 'Audio' },
-    { id: 54, name: 'Gaming Laptop (High-End)', image: 'https://placehold.co/300x400/1E90FF/FFFFFF?text=Gaming+Laptop', inStock: false, reviews: 4.8, price: 1300.00, description: 'Dominate the competition with this high-performance gaming laptop, built for speed and immersion.', category: 'Laptops' },
-    { id: 55, name: 'External SSD 1TB', image: 'https://placehold.co/300x400/87CEFA/000000?text=External+SSD', inStock: true, reviews: 4.6, price: 85.00, description: 'Store and transfer files at lightning-fast speeds with this durable and portable 1TB external SSD.', category: 'Storage' },
-    { id: 56, name: 'Smart Home Security Camera', image: 'https://placehold.co/300x400/B0E0E6/000000?text=Security+Camera', inStock: true, reviews: 4.4, price: 99.00, description: 'Keep an eye on your home from anywhere with this smart security camera, offering motion detection and two-way audio.', category: 'Smart Home' },
-    { id: 57, name: 'Drone with 4K Camera', image: 'https://placehold.co/300x400/ADD8E6/000000?text=Drone', inStock: true, reviews: 4.9, price: 250.00, description: 'Capture breathtaking aerial footage with this easy-to-fly drone, featuring a high-quality 4K camera and stable flight.', category: 'Photography' },
-    { id: 58, name: 'Wireless Charging Pad', image: 'https://placehold.co/300x400/E0FFFF/000000?text=Charging+Pad', inStock: true, reviews: 4.2, price: 25.00, description: 'Charge your compatible devices effortlessly with this sleek and efficient wireless charging pad.', category: 'Accessories' },
+// Placeholder data for Handmade Crafts & Fashion products
+const handmadeProducts = [
+    // Clothes Section
+    { id: 1, name: 'Hand-Knitted Wool Sweater', image: 'https://placehold.co/300x400/8B4513/FFFFFF?text=Sweater', inStock: true, reviews: 4.8, price: 120.00, description: 'A cozy, hand-knitted sweater made from 100% organic wool.', category: 'Clothes' },
+    { id: 2, name: 'Hand-Embroidered Tunic', image: 'https://placehold.co/300x400/D2B48C/000000?text=Tunic', inStock: true, reviews: 4.5, price: 85.00, description: 'A lightweight linen tunic with intricate floral embroidery.', category: 'Clothes' },
+    { id: 3, name: 'Block-Print Summer Dress', image: 'https://placehold.co/300x400/F0F8FF/000000?text=Dress', inStock: false, reviews: 4.9, price: 110.00, description: 'A vibrant summer dress featuring traditional hand block-printing.', category: 'Clothes' },
+
+    // Jewelry Section
+    { id: 4, name: 'Sterling Silver Leaf Pendant', image: 'https://placehold.co/300x400/708090/FFFFFF?text=Pendant', inStock: true, reviews: 4.7, price: 65.00, description: 'A delicate sterling silver pendant shaped like a real leaf.', category: 'Jewelry' },
+    { id: 5, name: 'Beaded Statement Necklace', image: 'https://placehold.co/300x400/6A5ACD/FFFFFF?text=Necklace', inStock: true, reviews: 4.6, price: 90.00, description: 'A bold, handcrafted necklace with colorful glass beads.', category: 'Jewelry' },
+    { id: 6, name: 'Copper & Turquoise Earrings', image: 'https://placehold.co/300x400/F5DEB3/000000?text=Earrings', inStock: true, reviews: 4.4, price: 45.00, description: 'Unique drop earrings crafted from hammered copper and genuine turquoise.', category: 'Jewelry' },
+
+    // Artworks Section
+    { id: 7, name: 'Abstract Watercolor Painting', image: 'https://placehold.co/300x400/2F4F4F/FFFFFF?text=Painting', inStock: true, reviews: 4.9, price: 150.00, description: 'Original abstract artwork, painted with high-quality watercolors on canvas.', category: 'Artworks' },
+    { id: 8, name: 'Hand-Thrown Ceramic Vase', image: 'https://placehold.co/300x400/FFB6C1/000000?text=Vase', inStock: true, reviews: 4.7, price: 75.00, description: 'A beautiful, rustic ceramic vase, hand-thrown on a pottery wheel.', category: 'Artworks' },
+    { id: 9, name: 'Custom Leather Bookmark', image: 'https://placehold.co/300x400/A0A0A0/FFFFFF?text=Bookmark', inStock: true, reviews: 4.3, price: 20.00, description: 'A personalized leather bookmark, hand-stamped with a custom design.', category: 'Artworks' },
 ];
 
 // Reusable ProductCard component for a clean, modern look
@@ -140,16 +147,19 @@ const QuickViewModal = ({ product, onClose }) => {
     );
 };
 
-
-const ElectronicsPage = () => {
+// Main component for the Handmade Crafts & Fashion page
+const HandmadeCraftsPage = () => {
     const [filters, setFilters] = useState({
         inStock: false,
-        priceRange: [0, 2000],
+        priceRange: [0, 200],
         minReviews: 0,
+        category: 'All', // New state for category filter
     });
     const [sortBy, setSortBy] = useState('price-asc');
     const [quickViewProduct, setQuickViewProduct] = useState(null);
     const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
+
+    const categories = ['All', 'Clothes', 'Jewelry', 'Artworks'];
 
     const handleFilterChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -159,11 +169,16 @@ const ElectronicsPage = () => {
         }));
     };
 
+    const handleCategoryChange = (category) => {
+        setFilters(prev => ({ ...prev, category }));
+        setIsFilterPanelOpen(false); // Close the panel after selecting a category on mobile
+    };
+
     const handleSortChange = (e) => {
         setSortBy(e.target.value);
     };
 
-    const filteredAndSortedProducts = electronicsProducts
+    const filteredAndSortedProducts = handmadeProducts
         .filter(product => {
             // In Stock filter
             if (filters.inStock && !product.inStock) return false;
@@ -171,6 +186,8 @@ const ElectronicsPage = () => {
             if (product.price < filters.priceRange[0] || product.price > filters.priceRange[1]) return false;
             // Reviews filter
             if (product.reviews < filters.minReviews) return false;
+            // Category filter
+            if (filters.category !== 'All' && product.category !== filters.category) return false;
             return true;
         })
         .sort((a, b) => {
@@ -182,20 +199,33 @@ const ElectronicsPage = () => {
             }
         });
 
+    const getCategoryIcon = (category) => {
+        switch (category) {
+            case 'Clothes':
+                return <FaTshirt className="text-xl" />;
+            case 'Jewelry':
+                return <FaRing className="text-xl" />;
+            case 'Artworks':
+                return <FaPaintBrush className="text-xl" />;
+            default:
+                return null;
+        }
+    };
+
     return (
-        <div className="bg-gray-50 min-h-screen">
+        <div className="bg-gray-50 min-h-screen font-sans">
             {/* Hero Section */}
-            <div className="relative bg-gradient-to-r from-blue-700 via-sky-500 to-cyan-500 h-64 flex items-center justify-center text-white p-4">
+            <div className="relative bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 h-64 flex items-center justify-center text-white p-4">
                 <div className="text-center">
-                    <h1 className="text-5xl font-extrabold tracking-tight mb-2">Electronics & Gadgets</h1>
-                    <p className="text-xl font-light opacity-80">Innovation at your fingertips.</p>
+                    <h1 className="text-5xl font-extrabold tracking-tight mb-2">Handmade Crafts & Fashion</h1>
+                    <p className="text-xl font-light opacity-80">Discover unique, handcrafted creations.</p>
                 </div>
             </div>
 
             <div className="container mx-auto py-8 px-4">
                 {/* Filter and Sort Section */}
                 <div className="sticky top-0 bg-white rounded-xl shadow-lg z-10 p-4 mb-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 md:space-x-4">
-                    <h2 className="text-xl font-semibold text-gray-800">Shop Technology</h2>
+                    <h2 className="text-xl font-semibold text-gray-800">Explore Our Collection</h2>
 
                     {/* Mobile Filter Button */}
                     <button
@@ -209,8 +239,22 @@ const ElectronicsPage = () => {
 
                     {/* Desktop Filters */}
                     <div className="hidden md:flex md:items-center space-x-4 w-full justify-end">
+                        {/* Category Buttons */}
+                        {categories.map(category => (
+                            <button
+                                key={category}
+                                onClick={() => handleCategoryChange(category)}
+                                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 flex items-center space-x-2 ${filters.category === category
+                                        ? 'bg-purple-600 text-white shadow-lg'
+                                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                    }`}
+                            >
+                                {getCategoryIcon(category)}
+                                <span>{category}</span>
+                            </button>
+                        ))}
                         <div className="w-1/3 max-w-sm">
-                            <label htmlFor="sort" className="block text-sm font-medium text-gray-700">Sort By</label>
+                            <label htmlFor="sort" className="sr-only">Sort By</label>
                             <select
                                 id="sort"
                                 name="sort"
@@ -250,6 +294,22 @@ const ElectronicsPage = () => {
                             </button>
                         </div>
                         <div className="space-y-6">
+                            {/* Category Buttons for Mobile */}
+                            <div className="grid grid-cols-2 gap-4">
+                                {categories.map(category => (
+                                    <button
+                                        key={category}
+                                        onClick={() => handleCategoryChange(category)}
+                                        className={`w-full py-3 rounded-full font-semibold transition-colors duration-200 flex items-center justify-center space-x-2 ${filters.category === category
+                                                ? 'bg-purple-600 text-white shadow-lg'
+                                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                            }`}
+                                    >
+                                        {getCategoryIcon(category)}
+                                        <span>{category}</span>
+                                    </button>
+                                ))}
+                            </div>
                             {/* Sort Dropdown for Mobile */}
                             <div>
                                 <label htmlFor="mobile-sort" className="block text-lg font-medium text-gray-700 mb-2">Sort By</label>
@@ -265,7 +325,6 @@ const ElectronicsPage = () => {
                                     <option value="reviews-desc">Reviews: High to Low</option>
                                 </select>
                             </div>
-
                             {/* In Stock Filter for Mobile */}
                             <div className="flex items-center space-x-4">
                                 <input
@@ -278,13 +337,11 @@ const ElectronicsPage = () => {
                                 />
                                 <label htmlFor="mobile-inStock" className="text-lg font-medium text-gray-700">In Stock Only</label>
                             </div>
-
-                            {/* Add more filters here if needed */}
                             <button
                                 onClick={() => setIsFilterPanelOpen(false)}
                                 className="w-full py-3 mt-8 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition-colors duration-200"
                             >
-                                Apply Filters
+                                Close Filters
                             </button>
                         </div>
                     </div>
@@ -310,4 +367,4 @@ const ElectronicsPage = () => {
     );
 };
 
-export default ElectronicsPage;
+export default HandmadeCraftsPage;

@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import { FaStar, FaRegStar, FaHeart, FaRegHeart, FaEye, FaTimes, FaFilter, FaAngleUp, FaAngleDown } from 'react-icons/fa';
+import { FaStar, FaRegStar, FaHeart, FaRegHeart, FaEye, FaTimes, FaFilter, FaAngleUp, FaAngleDown, FaWrench, FaTools } from 'react-icons/fa';
 
-// Placeholder data for Bags products with added price and category fields
-const bagsProducts = [
-    { id: 43, name: 'Stylish Leather Backpack', image: 'https://placehold.co/300x400/8B4513/FFFFFF?text=Backpack', inStock: true, reviews: 4.6, price: 99.99, description: 'A durable and stylish leather backpack, perfect for daily commutes.', category: 'Backpacks' },
-    { id: 44, name: 'Casual Crossbody Bag', image: 'https://placehold.co/300x400/D2B48C/000000?text=Crossbody', inStock: true, reviews: 4.2, price: 35.00, description: 'A lightweight and versatile crossbody bag for everyday essentials.', category: 'Casual' },
-    { id: 45, name: 'Elegant Evening Clutch', image: 'https://placehold.co/300x400/F0F8FF/000000?text=Clutch', inStock: false, reviews: 4.8, price: 60.00, description: 'A sophisticated clutch, ideal for special occasions and evening events.', category: 'Clutches' },
-    { id: 46, name: 'Laptop Briefcase', image: 'https://placehold.co/300x400/708090/FFFFFF?text=Briefcase', inStock: true, reviews: 4.7, price: 75.00, description: 'A waterproof laptop briefcase with multiple compartments for organization.', category: 'Work' },
-    { id: 47, name: 'Travel Duffel Bag', image: 'https://placehold.co/300x400/6A5ACD/FFFFFF?text=Duffel+Bag', inStock: true, reviews: 4.5, price: 130.00, description: 'Spacious and durable duffel bag for all your travel needs.', category: 'Travel' },
-    { id: 48, name: 'Canvas Tote Bag', image: 'https://placehold.co/300x400/F5DEB3/000000?text=Tote+Bag', inStock: true, reviews: 4.0, price: 25.00, description: 'An eco-friendly canvas tote bag for shopping or casual use.', category: 'Casual' },
-    { id: 49, name: "Kid's Animal Backpack", image: 'https://placehold.co/300x400/FFB6C1/000000?text=Kid+Backpack', inStock: true, reviews: 4.9, price: 38.00, description: "A fun, lightweight backpack for children featuring a playful animal design.", category: 'Backpacks' },
-    { id: 50, name: 'Professional Camera Bag', image: 'https://placehold.co/300x400/2F4F4F/FFFFFF?text=Camera+Bag', inStock: true, reviews: 4.7, price: 95.00, description: 'A protective camera bag with padded inserts for all your gear.', category: 'Accessories' },
+// Placeholder data for industrial & engineering products
+const industrialProducts = [
+    { id: 101, name: "Heavy-Duty Impact Wrench", image: 'https://placehold.co/300x400/34495E/FFFFFF?text=Impact+Wrench', inStock: true, reviews: 4.8, price: 189.99, description: "A powerful impact wrench for automotive and industrial applications. Features a high-torque motor and ergonomic design.", category: 'Tools' },
+    { id: 102, name: "CNC Milling Machine Parts", image: 'https://placehold.co/300x400/E74C3C/FFFFFF?text=CNC+Parts', inStock: true, reviews: 4.6, price: 550.00, description: "Precision-engineered replacement parts for a variety of CNC milling machines.", category: 'Machinery' },
+    { id: 103, name: "Industrial Safety Goggles", image: 'https://placehold.co/300x400/2ECC71/FFFFFF?text=Safety+Goggles', inStock: true, reviews: 4.9, price: 19.50, description: "Anti-fog and scratch-resistant safety goggles with a wide field of view for maximum protection.", category: 'Safety' },
+    { id: 104, name: "Hydraulic Pump Assembly", image: 'https://placehold.co/300x400/F1C40F/000000?text=Hydraulic+Pump', inStock: false, reviews: 4.5, price: 349.99, description: "A robust hydraulic pump assembly for various heavy-duty fluid power systems.", category: 'Components' },
+    { id: 105, name: "Digital Caliper Set", image: 'https://placehold.co/300x400/9B59B6/FFFFFF?text=Digital+Caliper', inStock: true, reviews: 4.7, price: 75.00, description: "High-precision digital calipers with a large LCD screen for accurate measurements.", category: 'Tools' },
+    { id: 106, name: "Adjustable Welding Helmet", image: 'https://placehold.co/300x400/3498DB/FFFFFF?text=Welding+Helmet', inStock: true, reviews: 4.8, price: 110.00, description: "Auto-darkening welding helmet with adjustable sensitivity and delay settings for professional use.", category: 'Safety' },
+    { id: 107, name: "Stainless Steel Ball Bearings", image: 'https://placehold.co/300x400/BCC8D1/000000?text=Ball+Bearings', inStock: true, reviews: 4.4, price: 12.50, description: "Corrosion-resistant ball bearings ideal for use in wet or harsh environments.", category: 'Components' },
+    { id: 108, name: "Compact Air Compressor", image: 'https://placehold.co/300x400/95A5A6/FFFFFF?text=Air+Compressor', inStock: false, reviews: 4.6, price: 299.00, description: "A portable and powerful air compressor for workshops and small-scale industrial tasks.", category: 'Machinery' },
 ];
 
 // Reusable ProductCard component for a clean, modern look
@@ -141,10 +141,10 @@ const QuickViewModal = ({ product, onClose }) => {
 };
 
 
-const BagsPage = () => {
+const IndustrialProductsPage = () => {
     const [filters, setFilters] = useState({
         inStock: false,
-        priceRange: [0, 200],
+        priceRange: [0, 500],
         minReviews: 0,
     });
     const [sortBy, setSortBy] = useState('price-asc');
@@ -163,7 +163,7 @@ const BagsPage = () => {
         setSortBy(e.target.value);
     };
 
-    const filteredAndSortedProducts = bagsProducts
+    const filteredAndSortedProducts = industrialProducts
         .filter(product => {
             // In Stock filter
             if (filters.inStock && !product.inStock) return false;
@@ -183,19 +183,21 @@ const BagsPage = () => {
         });
 
     return (
-        <div className="bg-gray-50 min-h-screen">
+        <div className="bg-gray-50 min-h-screen font-sans">
             {/* Hero Section */}
-            <div className="relative bg-gradient-to-r from-teal-500 via-cyan-500 to-blue-500 h-64 flex items-center justify-center text-white p-4">
+            <div className="relative bg-gradient-to-r from-gray-700 via-gray-900 to-gray-700 h-64 flex items-center justify-center text-white p-4">
                 <div className="text-center">
-                    <h1 className="text-5xl font-extrabold tracking-tight mb-2">Bags Collection</h1>
-                    <p className="text-xl font-light opacity-80">Find your perfect companion.</p>
+                    <h1 className="text-5xl font-extrabold tracking-tight mb-2 flex items-center justify-center">
+                        <FaTools className="mr-4 text-4xl" /> Tools, Machinery, Parts & Safety Equipment
+                    </h1>
+                    <p className="text-xl font-light opacity-80">Equipping the future of industry.</p>
                 </div>
             </div>
 
             <div className="container mx-auto py-8 px-4">
                 {/* Filter and Sort Section */}
                 <div className="sticky top-0 bg-white rounded-xl shadow-lg z-10 p-4 mb-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 md:space-x-4">
-                    <h2 className="text-xl font-semibold text-gray-800">Explore Our Bags</h2>
+                    <h2 className="text-xl font-semibold text-gray-800">Explore Our Industrial Catalog</h2>
 
                     {/* Mobile Filter Button */}
                     <button
@@ -278,8 +280,6 @@ const BagsPage = () => {
                                 />
                                 <label htmlFor="mobile-inStock" className="text-lg font-medium text-gray-700">In Stock Only</label>
                             </div>
-
-                            {/* Add more filters here if needed */}
                             <button
                                 onClick={() => setIsFilterPanelOpen(false)}
                                 className="w-full py-3 mt-8 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition-colors duration-200"
@@ -310,4 +310,4 @@ const BagsPage = () => {
     );
 };
 
-export default BagsPage;
+export default IndustrialProductsPage;

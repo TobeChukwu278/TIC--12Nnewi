@@ -4,9 +4,9 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import Navigation from './components/nav/Nav';
 import HomePage from './pages/Home';
 import TechnologyGadgetsPage from './pages/TechnologyGadgetsPage';
-import BagsPage from './pages/BagsPage';
-import ElectronicsPage from './pages/ElectronicsPage';
-import FootwearPage from './pages/FootwearPage';
+import HandmadeCraftsPage from './pages/HandmadeCraftsPage';
+import AgroTechPage from './pages/AgroTechPage';
+import IndustrialProductsPage from './pages/IndustrialProductsPage';
 import GroceriesPage from './pages/GroceriesPage';
 import WellnessPage from './pages/WellnessPage';
 import ProductDetailPage from './components/ProductDetailPage';
@@ -33,10 +33,10 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Land />} />
         <Route path="/store" element={<HomePage />} />
-        <Route path="/technologygadgetspage" element={<TechnologyGadgetsPage />} />
-        <Route path="/bags" element={<BagsPage />} />
-        <Route path="/electronics" element={<ElectronicsPage />} />
-        <Route path="/footwear" element={<FootwearPage />} />
+        <Route path="//technology-&-gadgets" element={<TechnologyGadgetsPage />} />
+        <Route path="/handmade-crafts" element={<HandmadeCraftsPage />} />
+        <Route path="/agro-tech" element={<AgroTechPage />} />
+        <Route path="/industrialproducts" element={<IndustrialProductsPage />} />
         <Route path="/groceries" element={<GroceriesPage />} />
         <Route path="/wellness" element={<WellnessPage />} />
         <Route path="/product/:id" element={<ProductDetailPage />} />
