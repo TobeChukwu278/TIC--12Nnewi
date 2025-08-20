@@ -1,49 +1,104 @@
-import React, { useState } from 'react';
-import { FaShoppingCart } from 'react-icons/fa'; // Example cart icon from react-icons
+import React, { useState, useEffect, useRef } from 'react';
+import { FaShoppingCart, FaTrashAlt } from 'react-icons/fa';
 
 const Cart = () => {
-    // State to manage the visibility of the cart items dropdown
+    const [cartItems, setCartItems] = useState([]);
     const [isCartOpen, setIsCartOpen] = useState(false);
+    const cartRef = useRef(null);
 
-    // Placeholder for cart items (can be managed with global state later)
-    const cartItems = [
-        { id: 1, name: 'Sample Item 1', price: 10.00, quantity: 1 },
-        { id: 2, name: 'Sample Item 2', price: 25.50, quantity: 2 },
-    ];
+    // Load cart items from localStorage on mount
+    useEffect(() => {
+        const stored = localStorage.getItem('cart');
+        if (stored) {
+            setCartItems(JSON.parse(stored));
+        }
+    }, []);
 
-    const toggleCart = () => {
-        setIsCartOpen(!isCartOpen);
+    // Close cart when clicking outside
+    useEffect(() => {
+        if (!isCartOpen) return;
+        const handleClickOutside = (event) => {
+            if (cartRef.current && !cartRef.current.contains(event.target)) {
+                setIsCartOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [isCartOpen]);
+
+    const removeItem = (id) => {
+        const updated = cartItems.filter(item => item.id !== id);
+        setCartItems(updated);
+        localStorage.setItem('cart', JSON.stringify(updated));
     };
 
+    const toggleCart = () => setIsCartOpen(!isCartOpen);
+
+    const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
     return (
-        <div className="relative">
+        <div className="relative" ref={cartRef}>
             <button
                 onClick={toggleCart}
-                className="relative p-2 rounded-full border-2 border-transparent hover:border-gray-400 focus:outline-none focus:border-blue-500 transition-colors duration-200"
+                className="relative p-2 rounded-full bg-gradient-to-tr from-blue-700 to-blue-400 shadow-lg hover:scale-105 transition-transform duration-200 border-2 border-blue-700 focus:outline-none cursor-pointer"
             >
-                <FaShoppingCart className="h-6 w-6 text-white " />
-                {/* Optional: Cart item count badge */}
+                <FaShoppingCart className="h-7 w-7 text-white" />
                 {cartItems.length > 0 && (
-                    <span className="absolute top-0 right-0 bg-red-600 text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center -mt-1 -mr-1">
+                    <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-lg border-2 border-white">
                         {cartItems.length}
                     </span>
                 )}
             </button>
             {isCartOpen && (
-                <div className="absolute right-0 mt-2 w-72 bg-white text-gray-900 rounded-lg shadow-xl p-4 z-20">
-                    <h3 className="font-bold text-lg mb-2">Shopping Cart</h3>
-                    {cartItems.length === 0 ? (
-                        <p className="text-sm text-gray-500">Your cart is empty.</p>
-                    ) : (
-                        <ul>
-                            {cartItems.map((item) => (
-                                <li key={item.id} className="flex justify-between items-center py-2 border-b last:border-b-0">
-                                    <span className="text-sm">{item.name}</span>
-                                    <span className="text-xs text-gray-600">${(item.price * item.quantity).toFixed(2)} ({item.quantity})</span>
-                                </li>
-                            ))}
-                        </ul>
-                    )}
+                <div className="absolute right-0 mt-3 w-80 bg-white rounded-2xl shadow-2xl z-30 border-2 border-blue-700 overflow-hidden animate-fade-in">
+                    <div className="bg-blue-700 text-white px-5 py-4 flex justify-between items-center">
+                        <h3 className="font-extrabold text-xl tracking-wide">Your Cart</h3>
+                        <button onClick={toggleCart} className="text-white font-bold text-lg hover:text-red-300">&times;</button>
+                    </div>
+                    <div className="p-5">
+                        {cartItems.length === 0 ? (
+                            <div className="text-center py-8">
+                                <FaShoppingCart className="mx-auto h-10 w-10 text-blue-400 mb-2" />
+                                <p className="text-gray-500 font-semibold">Your cart is empty.</p>
+                            </div>
+                        ) : (
+                            <ul className="divide-y divide-gray-200">
+                                {cartItems.map(item => (
+                                    <li key={item.id} className="flex items-center justify-between py-4">
+                                        <div>
+                                            <span className="font-bold text-gray-800">{item.name}</span>
+                                            <div className="text-xs text-gray-500 mt-1">
+                                                Qty: {item.quantity} &bull; ${item.price.toFixed(2)} each
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center space-x-2">
+                                            <span className="font-bold text-blue-700">${(item.price * item.quantity).toFixed(2)}</span>
+                                            <button
+                                                onClick={() => removeItem(item.id)}
+                                                className="p-1 rounded hover:bg-red-100"
+                                                title="Remove"
+                                            >
+                                                <FaTrashAlt className="text-red-500 h-4 w-4" />
+                                            </button>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                        {cartItems.length > 0 && (
+                            <div className="mt-6 flex justify-between items-center">
+                                <span className="font-bold text-lg text-gray-800">Total:</span>
+                                <span className="font-extrabold text-xl text-blue-700">${total.toFixed(2)}</span>
+                            </div>
+                        )}
+                        {cartItems.length > 0 && (
+                            <button className="mt-6 w-full py-3 bg-gradient-to-tr from-blue-700 to-blue-400 text-white font-bold rounded-xl shadow-lg hover:from-blue-800 hover:to-blue-500 transition-colors duration-200">
+                                Checkout
+                            </button>
+                        )}
+                    </div>
                 </div>
             )}
         </div>
