@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaTshirt, FaLaptop, FaShoppingBag, FaShoePrints, FaCar, FaLeaf, FaCog, FaSeedling, FaPalette, FaTools } from 'react-icons/fa';
+import { FaCar, FaLeaf, FaCog, FaSeedling, FaPalette, FaTools } from 'react-icons/fa';
 import { MdOutlineFastfood } from "react-icons/md";
 import { GiLipstick } from "react-icons/gi";
 import { IoIosArrowDown } from 'react-icons/io';
@@ -12,10 +12,10 @@ export const NavList = [
         hasDropdown: true,
         dropdownItems: [
             { item: 'Technology & Gadgets', icon: <FaCog /> },
-            { item: 'Agro Tech', icon: <FaSeedling /> },
-            { item: 'Handmade Crafts', icon: <FaPalette /> },
+            { item: 'Agro Allied', icon: <FaSeedling /> },
+            { item: 'Leather works/Crafts', icon: <FaPalette /> },
             { item: 'Industrial Products', icon: <FaTools /> },
-            { item: 'Groceries', icon: <MdOutlineFastfood /> },
+            { item: 'Food Processing', icon: <MdOutlineFastfood /> },
             { item: 'Beauty', icon: <GiLipstick /> },
             { item: 'Wellness', icon: <FaLeaf /> },
             { item: 'Automotive', icon: <FaCar /> }
@@ -26,11 +26,11 @@ export const NavList = [
         icon: <FaCog />,
     },
     {
-        Navitem: 'Agro Tech',
+        Navitem: 'Agro Allied',
         icon: <FaSeedling />,
     },
     {
-        Navitem: 'Handmade Crafts',
+        Navitem: 'Leather works/Crafts',
         icon: <FaPalette />,
     },
     {
@@ -38,15 +38,15 @@ export const NavList = [
         icon: <FaTools />,
     },
     {
-        Navitem: 'GROCERIES',
+        Navitem: 'Food Processing',
         icon: <MdOutlineFastfood />,
     },
     {
-        Navitem: 'BEAUTY',
+        Navitem: 'Chemical Allied/Cosmeticss',
         icon: <GiLipstick />,
     },
     {
-        Navitem: 'WELLNESS',
+        Navitem: 'Fabrication',
         icon: <FaLeaf />,
     }
 ];

@@ -15,9 +15,10 @@ const Header = () => {
 
                 {/* Desktop Navigation */}
                 <nav className="space-x-6 hidden md:flex">
-                    <NavLink to="/" className="hover:text-blue-600 transition duration-300 font-medium">Home</NavLink>
+                    {/* <NavLink to="/land" className="hover:text-blue-600 transition duration-300 font-medium">Home</NavLink> */}
+                    <a href="#hero" className="hover:text-blue-600 transition duration-300 font-medium">Home</a>
                     <a href="#about" className="hover:text-blue-600 transition duration-300 font-medium">About</a>
-                    <NavLink to="/store" className="hover:text-blue-600 transition duration-300 font-medium">Store</NavLink>
+                    <NavLink to="/" className="hover:text-blue-600 transition duration-300 font-medium">Store</NavLink>
                     <a href="#programs" className="hover:text-blue-600 transition duration-300 font-medium">Programs</a>
                     <a href="#news" className="hover:text-blue-600 transition duration-300 font-medium">News</a>
                     <a href="#contact" className="hover:text-blue-600 transition duration-300 font-medium">Contact</a>
@@ -35,7 +36,7 @@ const Header = () => {
             <div className={`md:hidden ${isMenuOpen ? 'block' : 'hidden'}`}>
                 <nav className="flex flex-col space-y-2 p-6 bg-white text-gray-800 border-t border-gray-200">
                     <a href="#about" className="block py-2 hover:text-blue-600 transition duration-300" onClick={() => setIsMenuOpen(false)}>About</a>
-                    <NavLink to="/store" onClick={() => setIsMenuOpen(false)} className="hover:text-blue-600 transition duration-300 font-medium">Store</NavLink>
+                    <NavLink to="/" onClick={() => setIsMenuOpen(false)} className="hover:text-blue-600 transition duration-300 font-medium">Store</NavLink>
                     <a href="#programs" className="block py-2 hover:text-blue-600 transition duration-300" onClick={() => setIsMenuOpen(false)}>Programs</a>
                     <a href="#news" className="block py-2 hover:text-blue-600 transition duration-300" onClick={() => setIsMenuOpen(false)}>News</a>
                     <a href="#contact" className="block py-2 hover:text-blue-600 transition duration-300" onClick={() => setIsMenuOpen(false)}>Contact</a>

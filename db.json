@@ -1,0 +1,50 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "email": "user@example.com",
+            "password": "password123",
+            "role": "customer"
+        },
+        {
+            "id": 2,
+            "email": "admin@example.com",
+            "password": "adminpassword",
+            "role": "admin"
+        }
+    ],
+    "products": [
+        {
+            "id": 1,
+            "name": "Product 1",
+            "price": 100,
+            "description": "Description for product 1"
+        },
+        {
+            "id": 2,
+            "name": "Product 2",
+            "price": 200,
+            "description": "Description for product 2"
+        }
+    ],
+    "orders": [
+        {
+            "id": 1,
+            "userId": 1,
+            "productId": 1,
+            "quantity": 2,
+            "status": "pending"
+        },
+        {
+            "id": 2,
+            "userId": 2,
+            "productId": 2,
+            "quantity": 1,
+            "status": "completed"
+        }
+    ],
+    "settings": {
+        "siteName": "TIC Nnewi",
+        "contactEmail": "support@ticnnewi.com"
+    }
+}

@@ -2,7 +2,7 @@ import React from 'react';
 
 const Hero = () => {
     return (
-        <section
+        <section id='hero'
             className="relative bg-cover bg-center bg-no-repeat py-16 min-h-screen"
             style={{ backgroundImage: "url('/image.png')" }}
         >
