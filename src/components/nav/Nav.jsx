@@ -40,8 +40,18 @@ const Navigation = () => {
                 <div className="p-4 space-y-4">
                     {/* Sign-in button for mobile menu is here */}
                     <div className="border-b border-gray-700 pb-4">
-                        <button className="w-full text-left p-2 rounded text-white bg-blue-600 hover:bg-blue-700 font-medium" onClick={closeMenu}>
-                            Sign In
+                        <button
+                            className="w-full text-left cursor-pointer p-2 rounded text-white bg-blue-600 hover:bg-blue-700 font-medium"
+                            onClick={closeMenu}
+                            as={NavLink}
+                        >
+                            <NavLink
+                                to="/loginsignup"
+                                className="w-full block text-white"
+                                onClick={closeMenu}
+                            >
+                                Sign In
+                            </NavLink>
                         </button>
                     </div>
 
@@ -113,7 +123,14 @@ const Navigation = () => {
                         <SearchInput />
                     </div>
                     <div className="flex items-center space-x-4">
-                        <button className="text-white hover:text-gray-400">Sign In</button>
+                        <button className="text-white hover:text-gray-400 cursor-pointer p-2 rounded bg-blue-600 hover:bg-blue-400 font-medium">
+                            <NavLink
+                                to="/loginsignup"
+                                className="w-full block text-white"
+                            >
+                                Sign In
+                            </NavLink>
+                        </button>
                         <Cart />
                     </div>
                 </nav>
