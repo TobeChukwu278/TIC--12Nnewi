@@ -18,7 +18,8 @@ export const NavList = [
             { item: 'Food Processing', icon: <MdOutlineFastfood /> },
             { item: 'Beauty', icon: <GiLipstick /> },
             { item: 'Wellness', icon: <FaLeaf /> },
-            { item: 'Automotive', icon: <FaCar /> }
+            { item: 'Automotive', icon: <FaCar /> },
+            { item: 'Fabrication', icon: <FaLeaf /> }
         ],
     },
     {
@@ -44,10 +45,6 @@ export const NavList = [
     {
         Navitem: 'Chemical Allied/Cosmeticss',
         icon: <GiLipstick />,
-    },
-    {
-        Navitem: 'Fabrication',
-        icon: <FaLeaf />,
     }
 ];
 
