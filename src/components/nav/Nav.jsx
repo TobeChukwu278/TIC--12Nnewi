@@ -1,19 +1,66 @@
-// src/components/Navigation.jsx
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { FaBars, FaTimes, FaHome, FaHeart, FaListAlt, FaUser } from 'react-icons/fa';
+import { FaBars, FaTimes, FaHome, FaHeart, FaListAlt, FaUser, FaAngleDown } from 'react-icons/fa';
 import { MdSearch } from 'react-icons/md';
 import SearchInput from './SearchInput';
 import DropdownNavItem from './DropdownNavItem';
 import LocationDropdown from './LocationDropdown';
 import Cart from './Cart';
 import { NavList } from './NavList';
+// Import only the custom hook from the new context file
+import { useUser } from '../UserContext';
 
+// Simple avatar component for logged-in users, now with a logout option
+const UserAvatar = ({ email }) => {
+    // Use the new custom hook to get the logout function
+    const { logout } = useUser();
+    return (
+        <div className="flex items-center space-x-2">
+            <NavLink to="/account" className="flex items-center space-x-2">
+                <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">
+                    {email ? email.charAt(0).toUpperCase() : <FaUser />}
+                </div>
+                <span className="hidden md:inline text-white font-medium">{email || 'Account'}</span>
+            </NavLink>
+            <button
+                onClick={logout}
+                className="text-white hover:text-gray-400 font-medium p-2 rounded bg-red-600 hover:bg-red-700 transition-colors duration-200"
+            >
+                Sign Out
+            </button>
+        </div>
+    );
+};
+
+// 3. The Refactored Navigation Component
 const Navigation = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-    // This function will be called to close the menu
+    // Use the new custom hook here instead of useContext(UserContext)
+    const { isLoggedIn, userEmail } = useUser();
     const closeMenu = () => setIsMenuOpen(false);
+
+    const renderNavLinks = (isMobile = false) => (
+        <nav className={`flex ${isMobile ? 'flex-col space-y-2' : 'space-x-6'}`}>
+            {NavList.map((item, index) => {
+                if (!item) return null;
+                if (item.hasDropdown) {
+                    return <DropdownNavItem key={index} item={item} onClose={isMobile ? closeMenu : undefined} />;
+                } else {
+                    return (
+                        <NavLink
+                            key={index}
+                            to={`/${item.Navitem.toLowerCase().replace(/\s/g, '-')}`}
+                            className="text-white hover:text-gray-400 font-medium transition-colors duration-200 flex items-center space-x-2"
+                            onClick={closeMenu}
+                        >
+                            {item.icon}
+                            <span>{item.Navitem}</span>
+                        </NavLink>
+                    );
+                }
+            })}
+        </nav>
+    );
 
     return (
         <div>
@@ -27,69 +74,39 @@ const Navigation = () => {
             </nav>
 
             {/* Mobile Menu (Full-screen overlay) */}
-            <div className={`fixed inset-0 bg-gray-800 text-white z-50 transform lg:hidden transition-transform duration-300 ease-in-out ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-                {/* Mobile Menu Header */}
+            <nav className={`fixed inset-0 bg-gray-800 text-white z-50 transform lg:hidden transition-transform duration-300 ease-in-out ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
                 <div className="p-4 flex justify-between items-center border-b border-gray-700">
                     <NavLink to="/" className="font-bold text-xl" onClick={closeMenu}>TIC</NavLink>
                     <button onClick={closeMenu} className="text-white">
                         <FaTimes className="h-6 w-6" />
                     </button>
                 </div>
-
-                {/* Mobile Menu Content */}
                 <div className="p-4 space-y-4">
-                    {/* Sign-in button for mobile menu is here */}
                     <div className="border-b border-gray-700 pb-4">
-                        <button
-                            className="w-full text-left cursor-pointer p-2 rounded text-white bg-blue-600 hover:bg-blue-700 font-medium"
-                            onClick={closeMenu}
-                            as={NavLink}
-                        >
+                        {isLoggedIn ? (
+                            <UserAvatar email={userEmail} />
+                        ) : (
                             <NavLink
                                 to="/loginsignup"
-                                className="w-full block text-white"
+                                className="w-full block text-white p-2 rounded bg-blue-600 hover:bg-blue-700 font-medium text-center"
                                 onClick={closeMenu}
                             >
                                 Sign In
                             </NavLink>
-                        </button>
+                        )}
                     </div>
-
                     <div className="border-b border-gray-700 pb-4">
                         <LocationDropdown />
                     </div>
                     <div className="border-b border-gray-700 pb-4">
                         <SearchInput />
                     </div>
-                    <nav>
-                        <div className="flex flex-col space-y-2">
-                            {NavList.map((item, index) => {
-                                if (!item) return null;
-
-                                if (item.hasDropdown) {
-                                    // You might need to pass `closeMenu` down as a prop to your DropdownNavItem component
-                                    return <DropdownNavItem key={index} item={item} onClose={closeMenu} />;
-                                } else {
-                                    return (
-                                        <NavLink
-                                            key={index}
-                                            to={`/${item.Navitem.toLowerCase().replace(/\s/g, '-')}`}
-                                            className="text-white hover:text-gray-400 font-medium transition-colors duration-200 flex items-center space-x-2"
-                                            onClick={closeMenu} // <-- Added onClick handler here
-                                        >
-                                            {item.icon}
-                                            <span>{item.Navitem}</span>
-                                        </NavLink>
-                                    );
-                                }
-                            })}
-                        </div>
-                    </nav>
+                    {renderNavLinks(true)}
                 </div>
-            </div>
+            </nav>
 
             {/* Mobile Bottom Navigation Bar */}
-            <div className="fixed bottom-0 left-0 right-0 bg-gray-900 p-2 flex justify-around items-center text-white border-t border-gray-700 lg:hidden z-40">
+            <nav className="fixed bottom-0 left-0 right-0 bg-gray-900 p-2 flex justify-around items-center text-white border-t border-gray-700 lg:hidden z-40">
                 <NavLink to="/" onClick={closeMenu} className="flex flex-col items-center p-2 text-white hover:text-gray-400">
                     <FaHome className="h-6 w-6" />
                     <span className="text-xs mt-1">Home</span>
@@ -110,7 +127,7 @@ const Navigation = () => {
                     <FaUser className="h-6 w-6" />
                     <span className="text-xs mt-1">Account</span>
                 </NavLink>
-            </div>
+            </nav>
 
             {/* Desktop Navigation (hidden on small screens) */}
             <div className="hidden lg:block">
@@ -123,36 +140,22 @@ const Navigation = () => {
                         <SearchInput />
                     </div>
                     <div className="flex items-center space-x-4">
-                        <button className="text-white hover:text-gray-400 cursor-pointer p-2 rounded bg-blue-600 hover:bg-blue-400 font-medium">
+                        {isLoggedIn ? (
+                            <UserAvatar email={userEmail} />
+                        ) : (
                             <NavLink
                                 to="/loginsignup"
-                                className="w-full block text-white"
+                                className="text-white hover:text-gray-400 cursor-pointer p-2 rounded bg-blue-600 hover:bg-blue-400 font-medium"
                             >
                                 Sign In
                             </NavLink>
-                        </button>
+                        )}
                         <Cart />
                     </div>
                 </nav>
-
                 <nav className="bg-gray-800 p-4 shadow-md rounded-b-lg">
-                    <div className="container mx-auto flex justify-center space-x-6">
-                        {NavList.map((item, index) => {
-                            if (item.hasDropdown) {
-                                return <DropdownNavItem key={index} item={item} />;
-                            } else {
-                                return (
-                                    <NavLink
-                                        key={index}
-                                        to={`/${item.Navitem.toLowerCase().replace(/\s/g, '-')}`}
-                                        className="text-white hover:text-gray-400 font-medium transition-colors duration-200 flex items-center space-x-2"
-                                    >
-                                        {item.icon}
-                                        <span>{item.Navitem}</span>
-                                    </NavLink>
-                                );
-                            }
-                        })}
+                    <div className="container mx-auto flex justify-center">
+                        {renderNavLinks()}
                     </div>
                 </nav>
             </div>
