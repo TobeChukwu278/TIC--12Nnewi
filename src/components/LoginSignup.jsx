@@ -35,6 +35,7 @@ const LoginView = ({ setView }) => {
             if (response.ok) {
                 // Call the login function from the context
                 login(data.email, data.token);
+                localStorage.setItem("token", data.token);
                 navigate('/');
             } else {
                 setMessage(data.error || 'Login failed.');
@@ -130,7 +131,7 @@ LoginView.propTypes = {
 const RegisterView = ({ setView }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [name, setName] = useState('');
+    // const [name, setName] = useState('');
     const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(false);
 
@@ -140,7 +141,7 @@ const RegisterView = ({ setView }) => {
         setLoading(true);
 
         try {
-            const body = { email, password, name, role: 'customer' };
+            const body = { email, password, role: 'customer' };
             const response = await fetch('http://localhost:3001/api/user/auth/register', {
                 method: 'POST',
                 headers: {
@@ -154,7 +155,7 @@ const RegisterView = ({ setView }) => {
                 setMessage('Registration successful! You can now log in.');
                 setEmail('');
                 setPassword('');
-                setName('');
+                // setName('');
                 setTimeout(() => setView('login'), 2000);
             } else {
                 setMessage(data.error || 'Registration failed.');
@@ -176,7 +177,7 @@ const RegisterView = ({ setView }) => {
             <h2 className="text-2xl font-bold text-gray-700 mb-6">Register</h2>
             <form onSubmit={handleSubmit} className="w-full space-y-4">
                 <div>
-                    <label className="block text-gray-700 text-sm font-medium mb-1" htmlFor="name">Name</label>
+                    {/* <label className="block text-gray-700 text-sm font-medium mb-1" htmlFor="name">Name</label>
                     <input
                         id="name"
                         type="text"
@@ -184,7 +185,7 @@ const RegisterView = ({ setView }) => {
                         onChange={(e) => setName(e.target.value)}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         required
-                    />
+                    /> */}
                 </div>
                 <div>
                     <label className="block text-gray-700 text-sm font-medium mb-1" htmlFor="email">Email</label>
