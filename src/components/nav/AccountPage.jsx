@@ -4,24 +4,24 @@ import { useNavigate } from "react-router-dom";
 const AccountPage = () => {
     const navigate = useNavigate();
 
-    // 🔹 User and session
+    // User & session
     const [user, setUser] = useState(null);
     const [isLoggedIn, setIsLoggedIn] = useState(true);
 
-    // 🔹 Dashboard data
+    // Dashboard data
     const [addresses, setAddresses] = useState([]);
     const [paymentMethods, setPaymentMethods] = useState([]);
 
-    // 🔹 UI state
+    // UI state
     const [activeTab, setActiveTab] = useState("profile");
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
-    // 🔹 Modal state
+    // Modals
     const [showAddressModal, setShowAddressModal] = useState(false);
     const [showPaymentModal, setShowPaymentModal] = useState(false);
 
-    // 🔹 Form state
+    // Forms
     const [addressForm, setAddressForm] = useState({
         street_address: "",
         city: "",
@@ -36,81 +36,62 @@ const AccountPage = () => {
         cardholder_name: "",
     });
 
-    // ===================================================
-    // Fetch dashboard data
-    // ===================================================
-    // ===================================================
     // Fetch account overview
-    // ===================================================
     const fetchAccountOverview = async (token) => {
         try {
             setLoading(true);
 
-            const [addressesRes, paymentRes] = await Promise.all([
+            const [userRes, addressesRes, paymentRes] = await Promise.all([
+                fetch("http://localhost:3001/api/user/auth/user/profile", {
+                    headers: { Authorization: `Bearer ${token}` },
+                }),
                 fetch("http://localhost:3001/api/user/addresses", {
                     headers: { Authorization: `Bearer ${token}` },
                 }),
-                fetch("http://localhost:3001/api/user/payments", {
+                fetch("http://localhost:3001/api/user/payment-methods", {
                     headers: { Authorization: `Bearer ${token}` },
                 }),
-                fetch("http://localhost:3001/api/user/orders", {
-                    headers: { Authorization: `Bearer ${token}` },
-                }),
-                fetch("http://localhost:3001/api/user/wishlists", {
-                    headers: { Authorization: `Bearer ${token}` },
-                }),
-                // If you want later:
-                // fetch("http://localhost:3001/api/user/orders", {...}),
-                // fetch("http://localhost:3001/api/user/wishlists", {...})
             ]);
 
             if (!addressesRes.ok) throw new Error("Failed to fetch addresses");
             if (!paymentRes.ok) throw new Error("Failed to fetch payment methods");
 
-            const addressesData = await addressesRes.json();
-            const paymentData = await paymentRes.json();
-
-            setAddresses(addressesData || []);
-            setPaymentMethods(paymentData || []);
-
+            setUser(await userRes.json());
+            setAddresses(await addressesRes.json());
+            setPaymentMethods(await paymentRes.json());
         } catch (err) {
-            console.error("❌ Error fetching account overview:", err.message);
             setError(err.message);
         } finally {
             setLoading(false);
         }
     };
 
-
     useEffect(() => {
-        console.log("🔹 useEffect triggered: checking token...");
         const token = localStorage.getItem("token");
-        console.log("🔹 Token from localStorage:", token);
 
         if (!token) {
-            console.log("❌ No token found. Redirecting to /loginsignup");
             setIsLoggedIn(false);
             navigate("/loginsignup");
             return;
         }
 
-        console.log("✅ Token found. Fetching dashboard...");
         fetchAccountOverview(token);
     }, [navigate]);
 
+    // Handlers
     // ===================================================
     // Handlers
     // ===================================================
 
-    const handleAddressChange = (e) => {
-        const { name, value } = e.target;
-        setAddressForm((prev) => ({ ...prev, [name]: value }));
-    };
+    // const handleAddressChange = (e) => {
+    //     const { name, value } = e.target;
+    //     setAddressForm((prev) => ({ ...prev, [name]: value }));
+    // };
 
-    const handlePaymentChange = (e) => {
-        const { name, value } = e.target;
-        setPaymentForm((prev) => ({ ...prev, [name]: value }));
-    };
+    // const handlePaymentChange = (e) => {
+    //     const { name, value } = e.target;
+    //     setPaymentForm((prev) => ({ ...prev, [name]: value }));
+    // };
 
     const handleAddAddress = async (e) => {
         e.preventDefault();
@@ -150,7 +131,7 @@ const AccountPage = () => {
 
         try {
             const res = await fetch(
-                "http://localhost:3001/api/user/payment-methods",
+                "http://localhost:3001/api/user/payments",
                 {
                     method: "POST",
                     headers: {
@@ -179,41 +160,42 @@ const AccountPage = () => {
         localStorage.removeItem("token");
         setUser(null);
         setIsLoggedIn(false);
-        navigate("/login");
+        navigate("/loginsignup");
     };
 
-    // ===================================================
-    // Render
-    // ===================================================
-    if (!isLoggedIn) {
-        return <p>Redirecting to login...</p>;
-    }
 
+
+    // 🔹 Loading screen
     if (loading) {
         return (
-            <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
-                <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-                <p className="mt-4 text-gray-600 text-lg font-medium">
-                    Loading your dashboard...
+            <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+                <div className="w-14 h-14 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
+                <p className="mt-4 text-indigo-700 text-lg font-medium">
+                    Loading your account...
                 </p>
             </div>
         );
     }
 
+    // 🔹 Redirect if not logged in
+    if (!isLoggedIn) {
+        return <p className="text-center mt-10 text-gray-600">Redirecting to login...</p>;
+    }
+
     return (
-        <div className="p-6 max-w-4xl mx-auto">
-            <h1 className="text-2xl font-bold mb-6">My Account</h1>
+        <div className="p-8 max-w-5xl mx-auto bg-white shadow-lg rounded-xl">
+            <h1 className="text-3xl font-bold text-indigo-700 mb-6">My Account</h1>
 
             {error && <p className="text-red-500 mb-4">{error}</p>}
 
             {/* Tabs */}
-            <div className="flex space-x-6 mb-6 border-b">
+            <div className="flex space-x-8 border-b pb-2 mb-6">
                 {["profile", "addresses", "payment"].map((tab) => (
                     <button
                         key={tab}
-                        className={`pb-2 ${activeTab === tab
-                            ? "border-b-2 border-blue-500 font-semibold"
-                            : ""
+                        className={`pb-2 transition-all duration-300 ${activeTab === tab
+                            ? "border-b-2 border-indigo-600 text-indigo-600 font-semibold"
+                            : "text-gray-500 hover:text-indigo-600"
                             }`}
                         onClick={() => setActiveTab(tab)}
                     >
@@ -226,17 +208,19 @@ const AccountPage = () => {
 
             {/* Profile */}
             {activeTab === "profile" && (
-                <div>
-                    <h2 className="text-xl font-semibold mb-2">Profile Information</h2>
-                    <p>
-                        <strong>Email:</strong> {user?.email}
-                    </p>
-                    <p>
-                        <strong>Last login:</strong> {user?.lastLogin || "N/A"}
-                    </p>
+                <div className="space-y-4">
+                    <h2 className="text-xl font-semibold text-gray-800">Profile Info</h2>
+                    <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
+                        <p>
+                            <strong>Email:</strong> {user?.email || "user@example.com"}
+                        </p>
+                        <p>
+                            <strong>Last login:</strong> {user?.lastLogin || "N/A"}
+                        </p>
+                    </div>
                     <button
                         onClick={handleLogout}
-                        className="mt-4 px-4 py-2 bg-red-500 text-white rounded"
+                        className="px-6 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg shadow"
                     >
                         Logout
                     </button>
@@ -246,24 +230,29 @@ const AccountPage = () => {
             {/* Addresses */}
             {activeTab === "addresses" && (
                 <div>
-                    <h2 className="text-xl font-semibold mb-2">Saved Addresses</h2>
+                    <h2 className="text-xl font-semibold mb-4">Saved Addresses</h2>
                     {addresses.length > 0 ? (
-                        <ul className="list-disc ml-6">
+                        <div className="grid gap-4">
                             {addresses.map((addr, i) => (
-                                <li key={i}>
-                                    {addr.street_address}, {addr.city}, {addr.state},{" "}
-                                    {addr.zip_code}, {addr.country}
-                                </li>
+                                <div
+                                    key={i}
+                                    className="bg-gray-50 p-4 rounded-lg shadow-sm border"
+                                >
+                                    <p className="text-gray-700">
+                                        {addr.street_address}, {addr.city}, {addr.state},{" "}
+                                        {addr.zip_code}, {addr.country}
+                                    </p>
+                                </div>
                             ))}
-                        </ul>
+                        </div>
                     ) : (
-                        <p>No saved addresses.</p>
+                        <p className="text-gray-500">No saved addresses yet.</p>
                     )}
                     <button
                         onClick={() => setShowAddressModal(true)}
-                        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+                        className="mt-4 px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow"
                     >
-                        Add Address
+                        + Add Address
                     </button>
                 </div>
             )}
@@ -271,53 +260,61 @@ const AccountPage = () => {
             {/* Payment */}
             {activeTab === "payment" && (
                 <div>
-                    <h2 className="text-xl font-semibold mb-2">Payment Methods</h2>
+                    <h2 className="text-xl font-semibold mb-4">Payment Methods</h2>
                     {paymentMethods.length > 0 ? (
-                        <ul className="list-disc ml-6">
+                        <div className="grid gap-4">
                             {paymentMethods.map((pm, i) => (
-                                <li key={i}>
-                                    {pm.cardholder_name} - **** {pm.card_number.slice(-4)}
-                                </li>
+                                <div
+                                    key={i}
+                                    className="bg-gray-50 p-4 rounded-lg shadow-sm border"
+                                >
+                                    <p className="text-gray-700">
+                                        {pm.cardholder_name} - **** {pm.card_number.slice(-4)}
+                                    </p>
+                                </div>
                             ))}
-                        </ul>
+                        </div>
                     ) : (
-                        <p>No payment methods.</p>
+                        <p className="text-gray-500">No payment methods yet.</p>
                     )}
                     <button
                         onClick={() => setShowPaymentModal(true)}
-                        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+                        className="mt-4 px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow"
                     >
-                        Add Payment Method
+                        + Add Payment
                     </button>
                 </div>
             )}
 
             {/* Address Modal */}
             {showAddressModal && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white p-6 rounded w-96">
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40">
+                    <div className="bg-white p-6 rounded-lg shadow-lg w-96">
                         <h3 className="text-lg font-semibold mb-4">Add Address</h3>
-                        <form onSubmit={handleAddAddress}>
+                        <form onSubmit={handleAddAddress} className="space-y-3">
                             {Object.keys(addressForm).map((key) => (
                                 <input
                                     key={key}
                                     name={key}
                                     placeholder={key.replace("_", " ")}
                                     value={addressForm[key]}
-                                    onChange={handleAddressChange}
-                                    className="border p-2 mb-2 w-full"
+                                    onChange={(e) =>
+                                        setAddressForm({ ...addressForm, [key]: e.target.value })
+                                    }
+                                    className="border rounded-lg p-2 w-full"
                                 />
                             ))}
-                            <div className="flex justify-end space-x-2 mt-4">
+                            <div className="flex justify-end space-x-3">
                                 <button
                                     type="button"
                                     onClick={() => setShowAddressModal(false)}
+                                    className="px-4 py-2 border rounded-lg"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
-                                    className="px-4 py-2 bg-blue-500 text-white rounded"
+                                    className="px-4 py-2 bg-indigo-600 text-white rounded-lg"
                                 >
                                     Save
                                 </button>
@@ -329,30 +326,33 @@ const AccountPage = () => {
 
             {/* Payment Modal */}
             {showPaymentModal && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white p-6 rounded w-96">
-                        <h3 className="text-lg font-semibold mb-4">Add Payment Method</h3>
-                        <form onSubmit={handleAddPaymentMethod}>
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40">
+                    <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+                        <h3 className="text-lg font-semibold mb-4">Add Payment</h3>
+                        <form onSubmit={handleAddPaymentMethod} className="space-y-3">
                             {Object.keys(paymentForm).map((key) => (
                                 <input
                                     key={key}
                                     name={key}
                                     placeholder={key.replace("_", " ")}
                                     value={paymentForm[key]}
-                                    onChange={handlePaymentChange}
-                                    className="border p-2 mb-2 w-full"
+                                    onChange={(e) =>
+                                        setPaymentForm({ ...paymentForm, [key]: e.target.value })
+                                    }
+                                    className="border rounded-lg p-2 w-full"
                                 />
                             ))}
-                            <div className="flex justify-end space-x-2 mt-4">
+                            <div className="flex justify-end space-x-3">
                                 <button
                                     type="button"
                                     onClick={() => setShowPaymentModal(false)}
+                                    className="px-4 py-2 border rounded-lg"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
-                                    className="px-4 py-2 bg-blue-500 text-white rounded"
+                                    className="px-4 py-2 bg-indigo-600 text-white rounded-lg"
                                 >
                                     Save
                                 </button>

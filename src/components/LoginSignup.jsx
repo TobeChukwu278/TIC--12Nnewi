@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 // The import path is now for the new context hook
 import { useUser } from './UserContext';
+// import {fa-eye, fa-eye-slash} from '@fortawesome/free-solid-svg-icons';
 
 // ==========================================================
 // Login View Component
 // ==========================================================
 const LoginView = ({ setView }) => {
+    const [showPassword, setShowPassword] = useState(false);
     // Use the new custom hook to get the login function
     const { login } = useUser();
     const navigate = useNavigate();
@@ -68,16 +70,31 @@ const LoginView = ({ setView }) => {
                     />
                 </div>
                 <div>
-                    <label className="block text-gray-700 text-sm font-medium mb-1" htmlFor="password">Password</label>
-                    <input
-                        id="password"
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                    />
+                    <label
+                        className="block text-gray-700 text-sm font-medium mb-1"
+                        htmlFor="password"
+                    >
+                        Password
+                    </label>
+                    <div className="relative">
+                        <input
+                            id="password"
+                            type={showPassword ? "text" : "password"}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
+                            required
+                        />
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700 focus:outline-none"
+                        >
+                            <i className={`fa-solid ${showPassword ? "fa-eye-slash" : "fa-eye"}`}></i>
+                        </button>
+                    </div>
                 </div>
+
                 <button
                     type="submit"
                     className="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:bg-blue-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
@@ -129,6 +146,7 @@ LoginView.propTypes = {
 // ==========================================================
 // ...existing code...
 const RegisterView = ({ setView }) => {
+    const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     // const [name, setName] = useState('');
@@ -177,17 +195,6 @@ const RegisterView = ({ setView }) => {
             <h2 className="text-2xl font-bold text-gray-700 mb-6">Register</h2>
             <form onSubmit={handleSubmit} className="w-full space-y-4">
                 <div>
-                    {/* <label className="block text-gray-700 text-sm font-medium mb-1" htmlFor="name">Name</label>
-                    <input
-                        id="name"
-                        type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                    /> */}
-                </div>
-                <div>
                     <label className="block text-gray-700 text-sm font-medium mb-1" htmlFor="email">Email</label>
                     <input
                         id="email"
@@ -198,17 +205,34 @@ const RegisterView = ({ setView }) => {
                         required
                     />
                 </div>
+
+
                 <div>
-                    <label className="block text-gray-700 text-sm font-medium mb-1" htmlFor="password">Password</label>
-                    <input
-                        id="password"
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                    />
+                    <label
+                        className="block text-gray-700 text-sm font-medium mb-1"
+                        htmlFor="password"
+                    >
+                        Password
+                    </label>
+                    <div className="relative">
+                        <input
+                            id="password"
+                            type={showPassword ? "text" : "password"}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
+                            required
+                        />
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700 focus:outline-none"
+                        >
+                            <i className={`fa-solid ${showPassword ? "fa-eye-slash" : "fa-eye"}`}></i>
+                        </button>
+                    </div>
                 </div>
+
                 <button
                     type="submit"
                     className="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:bg-green-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-green-500 disabled:opacity-50"
