@@ -16,6 +16,16 @@ function AccountPage() {
     const [paymentMethods, setPaymentMethods] = useState([]);
     const [addresses, setAddresses] = useState([]);
 
+    // Payment modal form
+    const [showPaymentModal, setShowPaymentModal] = useState(false);
+    const [paymentForm, setPaymentForm] = useState({ type: '', last4: '', expiry: '' });
+    const [modalLoading, setModalLoading] = useState(false);
+
+    // Address modal form
+    const [showAddressModal, setShowAddressModal] = useState(false);
+    const [addressModal, setAddressForm] = useState({ street_address: '', city: '', state: '', zip_code: '', country: '' });
+    // const [modalLoading, setModalLoading] = useState(false);
+
     /**
      * Fetches user profile data from the protected backend endpoint.
      * This function is called on component mount and after a successful login.
@@ -114,6 +124,69 @@ function AccountPage() {
         } catch (err) {
             console.error('Failed to fetch dashboard data:', err);
             setError('Failed to load dashboard data. Please try again.');
+        }
+    };
+
+    // Add Payment Modal
+    const handlePaymentInputChange = (e) => {
+        const { name, value } = e.target;
+        setPaymentForm(prev => ({ ...prev, [name]: value }));
+    };
+
+
+    const handleAddPayment = async (e) => {
+        e.preventDefault();
+        setModalLoading(true);
+        setError('');
+        const token = localStorage.getItem('token');
+        try {
+            const response = await fetch('http://localhost:3001/api/user/payments', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(paymentForm),
+            });
+            if (!response.ok) throw new Error('Failed to add payment method');
+            setShowPaymentModal(false);
+            setPaymentForm({ type: '', last4: '', expiry: '' });
+            await fetchDashboardData(token); // Refresh payments
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setModalLoading(false);
+        }
+    };
+
+    // Add Address Modal
+    const handleAddressInputChange = (e) => {
+        const { street_address, value } = e.target;
+        setAddressForm(prev => ({ ...prev, [street_address]: value }));
+    };
+    // 
+    const handleAddAddress = async (e) => {
+        e.preventDefault();
+        setModalLoading(true);
+        setError('');
+        const token = localStorage.getItem('token');
+        try {
+            const response = await fetch('http://localhost:3001/api/user/address', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(paymentForm),
+            });
+            if (!response.ok) throw new Error('Failed to add payment method');
+            setShowAddressModal(false);
+            setAddressForm({ street_address: '', city: '', state: '', zip_code: '', country: '' });
+            await fetchDashboardData(token); // Refresh payments
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setModalLoading(false);
         }
     };
 
@@ -235,7 +308,62 @@ function AccountPage() {
                         ) : (
                             <p className="text-center text-gray-500 dark:text-gray-400">No saved payment methods.</p>
                         )}
-                        <button className="w-full py-2 rounded-lg text-blue-600 dark:text-blue-400 hover:underline">Add / Manage Payments</button>
+                        <button
+                            className="w-full py-2 rounded-lg text-blue-600 dark:text-blue-400 hover:underline"
+                            onClick={() => setShowPaymentModal(true)}
+                        >
+                            Add / Manage Payments
+                        </button>
+                        {/* Payment Modal */}
+                        {showPaymentModal && (
+                            <div className="bg-opacity-40 flex items-center justify-center z-50">
+                                <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-2xl w-full max-w-md">
+                                    <h4 className="text-xl font-bold mb-4">Add Payment Method</h4>
+                                    <form onSubmit={handleAddPayment} className="space-y-4">
+                                        <input
+                                            name="type"
+                                            placeholder="Card Type (e.g. Visa)"
+                                            value={paymentForm.type}
+                                            onChange={handlePaymentInputChange}
+                                            className="w-full px-4 py-2 border rounded"
+                                            required
+                                        />
+                                        <input
+                                            name="last4"
+                                            placeholder="Last 4 Digits"
+                                            value={paymentForm.last4}
+                                            onChange={handlePaymentInputChange}
+                                            className="w-full px-4 py-2 border rounded"
+                                            required
+                                        />
+                                        <input
+                                            name="expiry"
+                                            placeholder="Expiry (MM/YY)"
+                                            value={paymentForm.expiry}
+                                            onChange={handlePaymentInputChange}
+                                            className="w-full px-4 py-2 border rounded"
+                                            required
+                                        />
+                                        <div className="flex justify-end space-x-2">
+                                            <button
+                                                type="button"
+                                                onClick={() => setShowPaymentModal(false)}
+                                                className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 text-gray-700"
+                                            >
+                                                Cancel
+                                            </button>
+                                            <button
+                                                type="submit"
+                                                className="px-4 py-2 rounded bg-blue-600 text-white font-bold"
+                                                disabled={modalLoading}
+                                            >
+                                                {modalLoading ? 'Saving...' : 'Save'}
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 );
             case 'addresses':
@@ -254,7 +382,75 @@ function AccountPage() {
                         ) : (
                             <p className="text-center text-gray-500 dark:text-gray-400">No saved addresses.</p>
                         )}
-                        <button className="w-full py-2 rounded-lg text-blue-600 dark:text-blue-400 hover:underline">Add / Edit Addresses</button>
+                        <button className="w-full py-2 rounded-lg text-blue-600 dark:text-blue-400 hover:underline"
+                            onClick={() => setShowAddressModal(true)}>Add / Edit Addresses</button>
+                        {/*  */}
+                        {/* Address Modal */}
+                        {showAddressModal && (
+                            <div className="bg-opacity-40 flex items-center justify-center z-50">
+                                <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-2xl w-full max-w-md">
+                                    <h4 className="text-xl font-bold mb-4">Add Address</h4>
+                                    <form onSubmit={handleAddAddress} className="space-y-4">
+                                        <input
+                                            name="street_address"
+                                            placeholder="Street address"
+                                            value={addressModal.street_address}
+                                            onChange={handleAddressInputChange}
+                                            className="w-full px-4 py-2 border rounded"
+                                            required
+                                        />
+                                        <input
+                                            name="city"
+                                            placeholder="City name"
+                                            value={addressModal.city}
+                                            onChange={handleAddressInputChange}
+                                            className="w-full px-4 py-2 border rounded"
+                                            required
+                                        />
+                                        <input
+                                            name="state"
+                                            placeholder="State"
+                                            value={addressModal.state}
+                                            onChange={handleAddressInputChange}
+                                            className="w-full px-4 py-2 border rounded"
+                                            required
+                                        />
+                                        <input
+                                            name="zip_code"
+                                            placeholder="Zip code"
+                                            value={addressModal.zip_code}
+                                            onChange={handleAddressInputChange}
+                                            className="w-full px-4 py-2 border rounded"
+                                            required
+                                        />
+                                        <input
+                                            name="country"
+                                            placeholder="Country"
+                                            value={addressModal.country}
+                                            onChange={handleAddressInputChange}
+                                            className="w-full px-4 py-2 border rounded"
+                                            required
+                                        />
+                                        <div className="flex justify-end space-x-2">
+                                            <button
+                                                type="button"
+                                                onClick={() => setShowPaymentModal(false)}
+                                                className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400"
+                                            >
+                                                Cancel
+                                            </button>
+                                            <button
+                                                type="submit"
+                                                className="px-4 py-2 rounded bg-blue-600 text-white font-bold"
+                                                disabled={modalLoading}
+                                            >
+                                                {modalLoading ? 'Saving...' : 'Save'}
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 );
             case 'settings':

@@ -1,63 +1,109 @@
-import React from 'react';
-import { FaCalendarAlt, FaBullhorn } from 'react-icons/fa'; // Importing icons for date and announcement
+import React, { useState, useEffect } from 'react';
+import { CalendarDays, Megaphone } from 'lucide-react';
 
-const news = [
-    {
-        title: "Startup Pitch Day: Future Innovators Showcase",
-        date: "August 15, 2025",
-        description: "Join us to witness groundbreaking ideas from our incubatees. Investors and industry leaders welcome!",
-        type: "event", // Added a type to differentiate news vs. events
-        link: "#", // Placeholder for a link to a full article/event page
-    },
-    {
-        title: "Innovation Workshop: Mastering Digital Marketing",
-        date: "September 10, 2025",
-        description: "A hands-on workshop designed to equip startups with essential digital marketing strategies.",
-        type: "event",
-        link: "#",
-    },
-    {
-        title: "TIC Nnewi Secures New Partnership for Seed Funding",
-        date: "July 28, 2025",
-        description: "Exciting news! Our centre has partnered with [Partner Name] to provide enhanced seed funding opportunities for startups.",
-        type: "news",
-        link: "#",
-    },
-    {
-        title: "Success Story: Local Startup Graduates from Incubation Program",
-        date: "July 20, 2025",
-        description: "We celebrate [Startup Name]'s successful graduation, marking a significant milestone in their journey.",
-        type: "news",
-        link: "#",
-    },
-];
+// The API endpoint. NOTE: This is a placeholder and should be a real URL for a production environment.
+const API_ENDPOINT = 'http://localhost:3001/api/store/updates/mentorship';
 
+// Main component to display news and events
 const NewsEvents = () => {
-    return (
-        <section id="news" className="py-16 bg-blue-50"> {/* Changed background to blue-50 for contrast */}
-            <div className="container mx-auto px-6 text-center">
-                <h2 className="text-4xl font-bold mb-10 text-blue-700">Latest News & Upcoming Events</h2> {/* Changed h3 to h2, improved text */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8"> {/* Adjusted grid for two columns */}
-                    {news.map((item, idx) => (
-                        <a
-                            key={idx}
-                            href={item.link} // Make the entire card clickable
-                            className="block bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 text-left"
-                        >
-                            <div className="flex items-center mb-3">
-                                {item.type === "event" ? (
-                                    <FaCalendarAlt className="w-6 h-6 text-blue-500 mr-3" />
-                                ) : (
-                                    <FaBullhorn className="w-6 h-6 text-green-500 mr-3" />
-                                )}
-                                <p className="text-sm text-gray-500 font-semibold">{item.date}</p>
-                            </div>
-                            <h3 className="text-xl font-bold mb-2 text-gray-900">{item.title}</h3> {/* Changed h4 to h3 */}
-                            <p className="text-gray-700 text-base">{item.description}</p>
-                        </a>
-                    ))}
+    // State to hold the news and events data
+    const [news, setNews] = useState([]);
+    // State to manage the loading status
+    const [loading, setLoading] = useState(true);
+    // State to handle potential fetch errors
+    const [error, setError] = useState(null);
+
+    // Function to fetch resources from the API
+    const fetchResources = async () => {
+        setLoading(true); // Start loading state
+        setError(null);   // Clear any previous errors
+
+        try {
+            // Fetch data from the specified API endpoint
+            const res = await fetch(API_ENDPOINT, {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            });
+
+            // Check if the response was successful
+            if (!res.ok) {
+                // If not, throw an error with the status
+                throw new Error('Failed to fetch resources. Status: ' + res.status);
+            }
+
+            // Parse the JSON response
+            const data = await res.json();
+
+            // Set the fetched data to state
+            setNews(data);
+
+        } catch (err) {
+            console.error('Fetch error:', err);
+            setError('Failed to load resources. Please check the API endpoint and try again.');
+        } finally {
+            // Stop loading regardless of success or failure
+            setLoading(false);
+        }
+    };
+
+    // Use useEffect to fetch data on initial component mount.
+    // The empty dependency array ensures this effect runs only once.
+    useEffect(() => {
+        fetchResources();
+    }, []);
+
+    // Conditional rendering based on the component's state (loading, error, or data)
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center py-10">
+                <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <section className="py-16 bg-blue-50 text-center">
+                <div className="p-6 text-red-600 font-bold">
+                    {error}
                 </div>
-                {/* Optional: Add a 'View All' button if there are more news/events */}
+            </section>
+        );
+    }
+
+    return (
+        <section id="news" className="py-16 bg-blue-50">
+            <div className="container mx-auto px-6 text-center">
+                <h2 className="text-4xl font-bold mb-10 text-blue-700">Latest News & Upcoming Events</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+                    {news.length > 0 ? (
+                        news.map((item, idx) => (
+                            <a
+                                key={idx}
+                                href={item.link}
+                                className="block bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 text-left"
+                            >
+                                <div className="flex items-center mb-3">
+                                    {/* Use 'category' from the server response to determine the icon */}
+                                    {item.category === "event" ? (
+                                        <CalendarDays className="w-6 h-6 text-blue-500 mr-3" />
+                                    ) : (
+                                        <Megaphone className="w-6 h-6 text-green-500 mr-3" />
+                                    )}
+                                    <p className="text-sm text-gray-500 font-semibold">{item.date}</p>
+                                </div>
+                                <h3 className="text-xl font-bold mb-2 text-gray-900">{item.title}</h3>
+                                {/* Use 'content' from the server response for the description */}
+                                <p className="text-gray-700 text-base">{item.content}</p>
+                            </a>
+                        ))
+                    ) : (
+                        // Display a message if there's no data
+                        <div className="text-center text-gray-500 col-span-full">No news or events to display at the moment.</div>
+                    )}
+                </div>
+
                 <div className="mt-12">
                     <a
                         href="/all-news-events"

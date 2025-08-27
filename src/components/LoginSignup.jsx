@@ -23,7 +23,7 @@ const LoginView = ({ setView }) => {
         setLoading(true);
 
         try {
-            const response = await fetch('http://localhost:3001/api/login', {
+            const response = await fetch('http://localhost:3001/api/user/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -141,7 +141,7 @@ const RegisterView = ({ setView }) => {
 
         try {
             const body = { email, password, name, role: 'customer' };
-            const response = await fetch('http://localhost:3001/api/register', {
+            const response = await fetch('http://localhost:3001/api/user/auth/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
